@@ -1,0 +1,10 @@
+bin/*
+build/*
+doc/html/*
+include/*
+output/*
+scripts/*
+third_party/*
+!third_party/snap-plugin-lib-cpp
+
+.vscode
