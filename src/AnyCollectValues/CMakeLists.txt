@@ -20,11 +20,38 @@
 
 FILE(GLOB AnyCollectValuesSources *.cc)
 
+
+function(find_static_library LIB_NAME OUT)
+    if (WIN32 OR MSVC)
+        set(CMAKE_FIND_LIBRARY_SUFFIXES ".lib")
+    elseif (UNIX)
+        set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
+    endif()
+
+    find_library(FOUND_${LIB_NAME}_STATIC ${LIB_NAME})
+
+    if (FOUND_${LIB_NAME}_STATIC)
+        get_filename_component(ABS_FILE ${FOUND_${LIB_NAME}_STATIC} ABSOLUTE)
+    else()
+        message(SEND_ERROR "Unable to find library ${LIB_NAME}")
+    endif()
+
+    set(${OUT} ${ABS_FILE} PARENT_SCOPE)
+endfunction()
+
+
 add_executable(AnyCollectValues ${AnyCollectValuesSources})
 
 target_compile_options(AnyCollectValues PUBLIC ${GLOBAL_CXX_COMPILE_OPTIONS})
 include_directories(${CMAKE_SOURCE_DIR}/src)
 target_link_libraries(AnyCollectValues AnyCollect)
+
+find_static_library(boost_system BOOST_SYSTEM_LIB)
+find_static_library(boost_filesystem BOOST_FILESYSTEM_LIB)
+
+target_link_libraries(AnyCollectValues -Wl,--as-needed)
+target_link_libraries(AnyCollectValues ${BOOST_SYSTEM_LIB} ${BOOST_FILESYSTEM_LIB})
+
 
 if(GPERFTOOLS_CPU_PROFILE)
 	find_library(PROFILER_LIB profiler)
