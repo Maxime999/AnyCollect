@@ -48,8 +48,10 @@ namespace AnyCollect {
 
 
 	void Controller::loadConfigFromFile(const std::string& configPath) {
-		Config config = Config{configPath};
+		if (this->isCollecting_)
+			return;
 
+		Config config = Config{configPath};
 		this->files_.clear();
 		this->expressions_.clear();
 		this->matchers_.clear();
@@ -93,7 +95,25 @@ namespace AnyCollect {
 	}
 
 
-	void Controller::collectMetrics() {
+	std::vector<Metric*> Controller::availableMetrics() noexcept {
+		if (this->isCollecting_ || this->files_.empty() || this->expressions_.empty() || this->matchers_.empty())
+			return {};
+
+		this->roundKey_ = this->roundKey_ - 10;
+
+		this->updatedMetrics_.clear();
+		this->readFiles();
+		this->computeMatches();
+
+		this->updatedMetrics_.clear();
+		for (auto& itr : this->metrics_)
+			this->updatedMetrics_.push_back(&itr.second);
+
+		this->roundKey_ += 10;
+		return this->updatedMetrics_;
+	}
+
+	void Controller::collectMetrics() noexcept {
 		if (this->isCollecting_ || this->files_.empty() || this->expressions_.empty() || this->matchers_.empty())
 			return;
 #if GPERFTOOLS_CPU_PROFILE
@@ -105,7 +125,7 @@ namespace AnyCollect {
 
 		this->updatedMetrics_.clear();
 		this->readFiles();
-		this->updateData();
+		this->computeMatches();
 
 		while (true) {
 			std::this_thread::sleep_for(this->samplingInterval_ - (std::chrono::steady_clock::now() - startTime));
@@ -113,7 +133,7 @@ namespace AnyCollect {
 
 			this->updatedMetrics_.clear();
 			this->readFiles();
-			this->updateData();
+			this->computeMatches();
 
 			this->delegate_.contollerCollectedMetrics(*this, this->updatedMetrics_);
 			if (this->delegate_.contollerShouldStopCollectingMetrics(*this)) {
@@ -130,12 +150,12 @@ namespace AnyCollect {
 	}
 
 
-	void Controller::readFiles() {
+	void Controller::readFiles() noexcept {
 		for (auto& file : this->files_)
 			file->read();
 	}
 
-	void Controller::updateData() {
+	void Controller::computeMatches() noexcept {
 		for (const auto& file : this->files_) {
 			auto begin = file->begin();
 			while(begin != file->end()) {
@@ -158,7 +178,7 @@ namespace AnyCollect {
 		this->roundKey_++;
 	}
 
-	void Controller::parseData(const File& file, const std::cmatch& match, const Matcher& matcher) {
+	void Controller::parseData(const File& file, const std::cmatch& match, const Matcher& matcher) noexcept {
 		auto value = matcher.getValue(match, file.pathParts());
 		if (!value.has_value())
 			return;

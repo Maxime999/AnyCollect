@@ -29,6 +29,7 @@
 namespace AnyCollect {
 	class Metric {
 		protected:
+			static std::hash<std::string> hasher;
 			size_t key_;
 			size_t roundKey_;
 			std::vector<std::string> name_;

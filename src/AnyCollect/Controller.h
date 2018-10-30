@@ -58,9 +58,9 @@ namespace AnyCollect {
 			std::map<size_t, Metric> metrics_;
 			std::vector<Metric*> updatedMetrics_;
 
-			void readFiles();
-			void updateData();
-			void parseData(const File& file, const std::cmatch& match, const Matcher& matcher);
+			void readFiles() noexcept;
+			void computeMatches() noexcept;
+			void parseData(const File& file, const std::cmatch& match, const Matcher& matcher) noexcept;
 
 		public:
 			Controller(ControllerDelegate& delegate) noexcept;
@@ -73,7 +73,8 @@ namespace AnyCollect {
 			void loadConfigFromFile(const std::string& configPath);
 			void setSamplingInterval(std::chrono::seconds interval) noexcept;
 
-			void collectMetrics();
+			std::vector<Metric*> availableMetrics() noexcept;
+			void collectMetrics() noexcept;
 	};
 
 	class ControllerDelegate {

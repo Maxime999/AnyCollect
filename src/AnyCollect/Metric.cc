@@ -22,6 +22,8 @@
 
 
 namespace AnyCollect {
+	std::hash<std::string> Metric::hasher{};
+
 	Metric::Metric(const std::vector<std::string>& name, const std::map<std::string, std::string>& tags, const std::string& unit) noexcept :
 		roundKey_(-1),
 		name_(name),
@@ -41,8 +43,7 @@ namespace AnyCollect {
 			hash.append(v);
 		}
 
-		std::hash<std::string> hasher;
-		return hasher(hash);
+		return Metric::hasher(hash);
 	}
 
 	const std::vector<std::string>& Metric::name() const noexcept {
