@@ -18,52 +18,48 @@
 // limitations under the License.
 //
 
-#include <iostream>
-
 #include "Config.h"
 #include "File.h"
 
 
 namespace AnyCollect {
-	Config::Config(const std::string& path) {
+	Config::Config(const std::string& path) noexcept {
 		try {
 			File configFile = File{path};
 			configFile.read();
+			if (configFile.contents().empty())
+				return;
+
 			nlohmann::json configJson = nlohmann::json::parse(configFile.contents());
 			from_json(configJson, *this);
 		}
 		catch(const std::exception& e) {
-			std::cerr << "Error while parsing configuration file:\n" << e.what() << '\n';
+			std::cerr << "Error while parsing configuration file: invalid JSON contents." <<std::endl;
+			std::cerr << "Internal error: " << e.what() << std::endl;
 			abort();
 		}
 	}
 
-	void from_json(const nlohmann::json& j, Config& c) {
-		try {
-			for (const auto& jf : j[std::string(Config::filesKey)].get<Config::filesType>()) {
-				Config::file f;
-				f.paths = jf[std::string(Config::file::pathsKey)].get<Config::file::pathsType>();
-				for (const auto& jfe : jf[std::string(Config::file::expressionsKey)].get<Config::file::expressionsType>()) {
-					Config::file::expression e;
-					e.regex = jfe[std::string(Config::file::expression::regexKey)].get<Config::file::expression::regexType>();
-					for (const auto& jfem : jfe[std::string(Config::file::expression::metricsKey)].get<Config::file::expression::metricsType>()) {
-						Config::file::expression::metric m;
-						m.name = jfem[std::string(Config::file::expression::metric::nameKey)].get<Config::file::expression::metric::nameType>();
-						m.value = jfem[std::string(Config::file::expression::metric::valueKey)].get<Config::file::expression::metric::valueType>();
-						m.unit = jfem[std::string(Config::file::expression::metric::unitKey)].get<Config::file::expression::metric::unitType>();
-						m.tags = jfem[std::string(Config::file::expression::metric::tagsKey)].get<Config::file::expression::metric::tagsType>();
-						m.computeRate = jfem[std::string(Config::file::expression::metric::computeRateKey)].get<Config::file::expression::metric::computeRateType>();
-						m.convertToUnitsPerSecond = jfem[std::string(Config::file::expression::metric::convertToUnitsPerSecondKey)].get<Config::file::expression::metric::convertToUnitsPerSecondType>();
-						e.metrics.push_back(std::move(m));
-					}
-					f.expressions.push_back(std::move(e));
+	void from_json(const nlohmann::json& j, Config& c) noexcept {
+		for (const auto& jf : getValue<Config::filesType>(j, Config::filesKey)) {
+			Config::file f;
+			f.paths = getValue<Config::file::pathsType>(jf, Config::file::pathsKey);
+			for (const auto& jfe : getValue<Config::file::expressionsType>(jf, Config::file::expressionsKey)) {
+				Config::file::expression e;
+				e.regex = getValue<Config::file::expression::regexType>(jfe, Config::file::expression::regexKey);
+				for (const auto& jfem : getValue<Config::file::expression::metricsType>(jfe, Config::file::expression::metricsKey)) {
+					Config::file::expression::metric m;
+					m.name = getValue<Config::file::expression::metric::nameType>(jfem, Config::file::expression::metric::nameKey);
+					m.value = getValue<Config::file::expression::metric::valueType>(jfem, Config::file::expression::metric::valueKey);
+					m.unit = getValue<Config::file::expression::metric::unitType>(jfem, Config::file::expression::metric::unitKey);
+					m.tags = getValue<Config::file::expression::metric::tagsType>(jfem, Config::file::expression::metric::tagsKey);
+					m.computeRate = getValue<Config::file::expression::metric::computeRateType>(jfem, Config::file::expression::metric::computeRateKey);
+					m.convertToUnitsPerSecond = getValue<Config::file::expression::metric::convertToUnitsPerSecondType>(jfem, Config::file::expression::metric::convertToUnitsPerSecondKey);
+					e.metrics.push_back(std::move(m));
 				}
-				c.files.push_back(std::move(f));
+				f.expressions.push_back(std::move(e));
 			}
-		}
-		catch(const std::exception& e) {
-			std::cerr << "Error while parsing configuration file:\n" << e.what() << '\n';
-			abort();
+			c.files.push_back(std::move(f));
 		}
 	}
 }

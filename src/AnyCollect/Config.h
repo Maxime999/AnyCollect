@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <iostream>
 #include <string_view>
 
 #include <json.hpp>
@@ -73,8 +74,20 @@ namespace AnyCollect {
 
 		std::vector<file> files;
 
-		Config(const std::string& path);
+		Config(const std::string& path) noexcept;
     };
 
-	void from_json(const nlohmann::json& j, Config& c);
+	void from_json(const nlohmann::json& j, Config& c) noexcept;
+
+	template<typename T, typename K>
+	T getValue(const nlohmann::json& j, const K& key) noexcept {
+		try {
+			return j[std::string(key)].get<T>();
+		}
+		catch(const std::exception& e) {
+			std::cerr << "Error while parsing configuration file: field named \"" << key << "\" of required type not found." << std::endl;
+			std::cerr << "Internal error: " << e.what() << std::endl;
+			abort();
+		}
+	}
 }

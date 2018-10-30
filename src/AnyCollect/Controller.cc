@@ -94,6 +94,8 @@ namespace AnyCollect {
 
 
 	void Controller::collectMetrics() {
+		if (this->isCollecting_ || this->files_.empty() || this->expressions_.empty() || this->matchers_.empty())
+			return;
 #if GPERFTOOLS_CPU_PROFILE
 		ProfilerStart("/tmp/aa.prof");
 #endif
