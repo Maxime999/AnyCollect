@@ -101,11 +101,16 @@ namespace AnyCollect {
 		this->roundKey_ = 0;
 		auto startTime = std::chrono::steady_clock::now();
 
+		this->updatedMetrics_.clear();
+		this->readFiles();
 		this->updateData();
+
 		while (true) {
 			std::this_thread::sleep_for(this->samplingInterval_ - (std::chrono::steady_clock::now() - startTime));
 			startTime = std::chrono::steady_clock::now();
 
+			this->updatedMetrics_.clear();
+			this->readFiles();
 			this->updateData();
 
 			this->delegate_.contollerCollectedMetrics(*this, this->updatedMetrics_);
@@ -116,7 +121,6 @@ namespace AnyCollect {
 #endif
 				return;
 			}
-
 #if GPERFTOOLS_CPU_PROFILE
 			ProfilerFlush();
 #endif
@@ -124,48 +128,58 @@ namespace AnyCollect {
 	}
 
 
-	void Controller::updateData() {
-		this->updatedMetrics_.clear();
+	void Controller::readFiles() {
 		for (auto& file : this->files_)
 			file->read();
+	}
 
+	void Controller::updateData() {
 		for (const auto& file : this->files_) {
 			auto begin = file->begin();
-			auto end = file->getLine(begin);
-			while(end != file->end()) {
-				for (const auto& expression : file->expressions()) {
-					std::cmatch match;
-					if (begin != end && *(end - 1) == '\n')
-						match = expression->apply(begin, end - 1);
-					else
-						match = expression->apply(begin, end);
-					if (match.empty())
-						continue;
-					for (const auto& matcher : expression->matchers()) {
-						auto value = matcher->getValue(match, file->pathParts());
-						if (!value.has_value())
-							continue;
-						auto metric = matcher->getMetric(match, file->pathParts());
-						if (!metric.has_value())
-							continue;
-
-						auto itr = this->metrics_.find(metric.value().key());
-						if (itr == this->metrics_.end()) {
-							itr = this->metrics_.insert(this->metrics_.begin(), {metric.value().key(), std::move(metric.value())});
-							if (!matcher->computeRate())
-								this->updatedMetrics_.push_back(&itr->second);
-						} else if (itr->second.roundKey() == this->roundKey_ - 1) {
-							this->updatedMetrics_.push_back(&itr->second);
+			while(begin != file->end()) {
+				auto end = file->getLine(begin);
+				if (begin != end) {
+					for (const auto& expression : file->expressions()) {
+						std::cmatch match = expression->apply(begin, end);
+						if (!match.empty()) {
+							for (const auto& matcher : expression->matchers())
+								this->parseData(*file, match, *matcher);
 						}
-						itr->second.setNewValue(value.value(), matcher->computeRate(), matcher->convertToUnitsPerSecond() ? this->unitsPerSecondFactor_ : 1.0);
-						itr->second.setTimestamp(file->timestamp());
-						itr->second.setRoundKey(this->roundKey_);
 					}
 				}
-				begin = end;
-				end = file->getLine(begin);
+				if (end != file->end())
+					begin = end + 1;
+				else
+					break;
 			}
 		}
 		this->roundKey_++;
 	}
+
+	void Controller::parseData(const File& file, const std::cmatch& match, const Matcher& matcher) {
+		auto value = matcher.getValue(match, file.pathParts());
+		if (!value.has_value())
+			return;
+		auto newMetric = matcher.getMetric(match, file.pathParts());
+		if (!newMetric.has_value())
+			return;
+
+		auto itr = this->metrics_.find(newMetric.value().key());
+		bool isNew = (itr == this->metrics_.end());
+		if (isNew)
+			itr = this->metrics_.insert(this->metrics_.begin(), {newMetric.value().key(), std::move(newMetric.value())});
+
+		Metric& metric = itr->second;
+		isNew = (isNew || (metric.roundKey() != this->roundKey_ - 1));
+		if (!isNew || !matcher.computeRate())
+			this->updatedMetrics_.push_back(&metric);
+
+		if (metric.roundKey() != this->roundKey_)
+			metric.setNewValue(value.value(), matcher.computeRate(), matcher.convertToUnitsPerSecond() ? this->unitsPerSecondFactor_ : 1.0);
+		else
+			metric.updateValue(value.value(), matcher.convertToUnitsPerSecond() ? this->unitsPerSecondFactor_ : 1.0);
+		metric.setTimestamp(file.timestamp());
+		metric.setRoundKey(this->roundKey_);
+	}
+
 }

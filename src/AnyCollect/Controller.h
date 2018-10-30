@@ -58,7 +58,9 @@ namespace AnyCollect {
 			std::map<size_t, Metric> metrics_;
 			std::vector<Metric*> updatedMetrics_;
 
+			void readFiles();
 			void updateData();
+			void parseData(const File& file, const std::cmatch& match, const Matcher& matcher);
 
 		public:
 			Controller(ControllerDelegate& delegate) noexcept;

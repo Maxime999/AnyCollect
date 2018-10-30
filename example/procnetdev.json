@@ -1,0 +1,144 @@
+{
+	"Files": [
+		{
+			"Paths": [
+				"/proc/net/dev"
+			],
+			"Expressions": [
+				{
+					"Regex": "^\\s*([\\w\\d]+):\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)",
+					"Metrics": [
+						{
+							"Name": ["network", "rx", "bytes"],
+							"Value": "$2",
+							"Unit": "bytes",
+							"Tags": {"interface": "$1"},
+							"ComputeRate": true,
+							"ConvertToUnitsPerSecond": true
+						},
+						{
+							"Name": ["network", "rx", "packets"],
+							"Value": "$3",
+							"Unit": "packets",
+							"Tags": {"interface": "$1"},
+							"ComputeRate": true,
+							"ConvertToUnitsPerSecond": true
+						},
+						{
+							"Name": ["network", "rx", "errs"],
+							"Value": "$4",
+							"Unit": "errors",
+							"Tags": {"interface": "$1"},
+							"ComputeRate": true,
+							"ConvertToUnitsPerSecond": true
+						},
+						{
+							"Name": ["network", "rx", "drop"],
+							"Value": "$5",
+							"Unit": "errors",
+							"Tags": {"interface": "$1"},
+							"ComputeRate": true,
+							"ConvertToUnitsPerSecond": true
+						},
+						{
+							"Name": ["network", "rx", "fifo"],
+							"Value": "$6",
+							"Unit": "errors",
+							"Tags": {"interface": "$1"},
+							"ComputeRate": true,
+							"ConvertToUnitsPerSecond": true
+						},
+						{
+							"Name": ["network", "rx", "frame"],
+							"Value": "$7",
+							"Unit": "errors",
+							"Tags": {"interface": "$1"},
+							"ComputeRate": true,
+							"ConvertToUnitsPerSecond": true
+						},
+						{
+							"Name": ["network", "rx", "compressed"],
+							"Value": "$8",
+							"Unit": "packets",
+							"Tags": {"interface": "$1"},
+							"ComputeRate": true,
+							"ConvertToUnitsPerSecond": true
+						},
+						{
+							"Name": ["network", "rx", "multicast"],
+							"Value": "$9",
+							"Unit": "packets",
+							"Tags": {"interface": "$1"},
+							"ComputeRate": true,
+							"ConvertToUnitsPerSecond": true
+						},
+						{
+							"Name": ["network", "tx", "bytes"],
+							"Value": "$10",
+							"Unit": "bytes",
+							"Tags": {"interface": "$1"},
+							"ComputeRate": true,
+							"ConvertToUnitsPerSecond": true
+						},
+						{
+							"Name": ["network", "tx", "packets"],
+							"Value": "$11",
+							"Unit": "packets",
+							"Tags": {"interface": "$1"},
+							"ComputeRate": true,
+							"ConvertToUnitsPerSecond": true
+						},
+						{
+							"Name": ["network", "tx", "errs"],
+							"Value": "$12",
+							"Unit": "errors",
+							"Tags": {"interface": "$1"},
+							"ComputeRate": true,
+							"ConvertToUnitsPerSecond": true
+						},
+						{
+							"Name": ["network", "tx", "drop"],
+							"Value": "$13",
+							"Unit": "errors",
+							"Tags": {"interface": "$1"},
+							"ComputeRate": true,
+							"ConvertToUnitsPerSecond": true
+						},
+						{
+							"Name": ["network", "tx", "fifo"],
+							"Value": "$14",
+							"Unit": "errors",
+							"Tags": {"interface": "$1"},
+							"ComputeRate": true,
+							"ConvertToUnitsPerSecond": true
+						},
+						{
+							"Name": ["network", "tx", "colls"],
+							"Value": "$15",
+							"Unit": "errors",
+							"Tags": {"interface": "$1"},
+							"ComputeRate": true,
+							"ConvertToUnitsPerSecond": true
+						},
+						{
+							"Name": ["network", "tx", "carrier"],
+							"Value": "$16",
+							"Unit": "errors",
+							"Tags": {"interface": "$1"},
+							"ComputeRate": true,
+							"ConvertToUnitsPerSecond": true
+						},
+						{
+							"Name": ["network", "tx", "compressed"],
+							"Value": "$17",
+							"Unit": "packets",
+							"Tags": {"interface": "$1"},
+							"ComputeRate": true,
+							"ConvertToUnitsPerSecond": true
+						}
+					]
+				}
+			]
+		}
+	]
+}

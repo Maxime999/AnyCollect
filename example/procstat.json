@@ -1,0 +1,194 @@
+{
+	"Files": [
+		{
+			"Paths": [
+				"/proc/stat"
+			],
+			"Expressions": [
+				{
+					"Regex": "^cpu\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)",
+					"Metrics": [
+						{
+							"Name": ["cpu", "all", "user"],
+							"Value": "$1",
+							"Unit": "jiffies",
+							"Tags": {},
+							"ComputeRate": true,
+							"ConvertToUnitsPerSecond": true
+						},
+						{
+							"Name": ["cpu", "all", "nice"],
+							"Value": "$2",
+							"Unit": "jiffies",
+							"Tags": {},
+							"ComputeRate": true,
+							"ConvertToUnitsPerSecond": true
+						},
+						{
+							"Name": ["cpu", "all", "system"],
+							"Value": "$3",
+							"Unit": "jiffies",
+							"Tags": {},
+							"ComputeRate": true,
+							"ConvertToUnitsPerSecond": true
+						},
+						{
+							"Name": ["cpu", "all", "idle"],
+							"Value": "$4",
+							"Unit": "jiffies",
+							"Tags": {},
+							"ComputeRate": true,
+							"ConvertToUnitsPerSecond": true
+						},
+						{
+							"Name": ["cpu", "all", "iowait"],
+							"Value": "$5",
+							"Unit": "jiffies",
+							"Tags": {},
+							"ComputeRate": true,
+							"ConvertToUnitsPerSecond": true
+						},
+						{
+							"Name": ["cpu", "all", "irq"],
+							"Value": "$6",
+							"Unit": "jiffies",
+							"Tags": {},
+							"ComputeRate": true,
+							"ConvertToUnitsPerSecond": true
+						},
+						{
+							"Name": ["cpu", "all", "softirq"],
+							"Value": "$7",
+							"Unit": "jiffies",
+							"Tags": {},
+							"ComputeRate": true,
+							"ConvertToUnitsPerSecond": true
+						},
+						{
+							"Name": ["cpu", "all", "steal"],
+							"Value": "$8",
+							"Unit": "jiffies",
+							"Tags": {},
+							"ComputeRate": true,
+							"ConvertToUnitsPerSecond": true
+						},
+						{
+							"Name": ["cpu", "all", "guest"],
+							"Value": "$9",
+							"Unit": "jiffies",
+							"Tags": {},
+							"ComputeRate": true,
+							"ConvertToUnitsPerSecond": true
+						},
+						{
+							"Name": ["cpu", "all", "guestNice"],
+							"Value": "$10",
+							"Unit": "jiffies",
+							"Tags": {},
+							"ComputeRate": true,
+							"ConvertToUnitsPerSecond": true
+						}
+					]
+				},
+				{
+					"Regex": "^cpu(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)",
+					"Metrics": [
+						{
+							"Name": ["cpu", "core", "user"],
+							"Value": "$2",
+							"Unit": "jiffies",
+							"Tags": {"cpuID": "$1"},
+							"ComputeRate": true,
+							"ConvertToUnitsPerSecond": true
+						},
+						{
+							"Name": ["cpu", "core", "nice"],
+							"Value": "$3",
+							"Unit": "jiffies",
+							"Tags": {"cpuID": "$1"},
+							"ComputeRate": true,
+							"ConvertToUnitsPerSecond": true
+						},
+						{
+							"Name": ["cpu", "core", "system"],
+							"Value": "$4",
+							"Unit": "jiffies",
+							"Tags": {"cpuID": "$1"},
+							"ComputeRate": true,
+							"ConvertToUnitsPerSecond": true
+						},
+						{
+							"Name": ["cpu", "core", "idle"],
+							"Value": "$5",
+							"Unit": "jiffies",
+							"Tags": {"cpuID": "$1"},
+							"ComputeRate": true,
+							"ConvertToUnitsPerSecond": true
+						},
+						{
+							"Name": ["cpu", "core", "iowait"],
+							"Value": "$6",
+							"Unit": "jiffies",
+							"Tags": {"cpuID": "$1"},
+							"ComputeRate": true,
+							"ConvertToUnitsPerSecond": true
+						},
+						{
+							"Name": ["cpu", "core", "irq"],
+							"Value": "$7",
+							"Unit": "jiffies",
+							"Tags": {"cpuID": "$1"},
+							"ComputeRate": true,
+							"ConvertToUnitsPerSecond": true
+						},
+						{
+							"Name": ["cpu", "core", "softirq"],
+							"Value": "$8",
+							"Unit": "jiffies",
+							"Tags": {"cpuID": "$1"},
+							"ComputeRate": true,
+							"ConvertToUnitsPerSecond": true
+						},
+						{
+							"Name": ["cpu", "core", "steal"],
+							"Value": "$9",
+							"Unit": "jiffies",
+							"Tags": {"cpuID": "$1"},
+							"ComputeRate": true,
+							"ConvertToUnitsPerSecond": true
+						},
+						{
+							"Name": ["cpu", "core", "guest"],
+							"Value": "$10",
+							"Unit": "jiffies",
+							"Tags": {"cpuID": "$1"},
+							"ComputeRate": true,
+							"ConvertToUnitsPerSecond": true
+						},
+						{
+							"Name": ["cpu", "core", "guestNice"],
+							"Value": "$11",
+							"Unit": "jiffies",
+							"Tags": {"cpuID": "$1"},
+							"ComputeRate": true,
+							"ConvertToUnitsPerSecond": true
+						}
+					]
+				},
+				{
+					"Regex": "^(?!cpu)(\\w+)\\s+(\\d+)",
+					"Metrics": [
+						{
+							"Name": ["cpu", "other", "$1"],
+							"Value": "$2",
+							"Unit": "",
+							"Tags": {},
+							"ComputeRate": true,
+							"ConvertToUnitsPerSecond": true
+						}
+					]
+				}
+			]
+		}
+	]
+}

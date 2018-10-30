@@ -1,0 +1,24 @@
+{
+	"Files": [
+		{
+			"Paths": [
+				"/proc/meminfo"
+			],
+			"Expressions": [
+				{
+					"Regex": "^([\\w\\(\\)]+):\\s+(\\d+)(?:\\s+(\\w+))?$",
+					"Metrics": [
+						{
+							"Name": ["memory", "$1"],
+							"Value": "$2",
+							"Unit": "$3",
+							"Tags": {},
+							"ComputeRate": false,
+							"ConvertToUnitsPerSecond": false
+						}
+					]
+				}
+			]
+		}
+	]
+}

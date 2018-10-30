@@ -53,6 +53,7 @@ namespace AnyCollect {
 			const std::map<std::string, std::string>& tags() const noexcept;
 
 			void setNewValue(double value, bool computeRate, double unitsPerSecondFactor = 1.0) noexcept;
+			void updateValue(double value, double unitsPerSecondFactor = 1.0) noexcept;
 			void setTimestamp(std::chrono::system_clock::time_point timestamp) noexcept;
 			void setRoundKey(size_t roundKey) noexcept;
 	};

@@ -120,7 +120,7 @@ namespace AnyCollect {
 			return this->reset();
 		}
 		this->buffer_[this->file_.gcount()] = '\0';
-		this->contents_ = std::string_view{this->buffer_.data(), static_cast<size_t>(this->file_.gcount()) + 1};
+		this->contents_ = std::string_view{this->buffer_.data(), static_cast<size_t>(this->file_.gcount())};
 		this->timestamp_ = std::chrono::system_clock::now();
 		return true;
 	}
@@ -136,8 +136,6 @@ namespace AnyCollect {
 	std::string_view::const_iterator File::getLine(std::string_view::const_iterator begin) const noexcept {
 		auto end = begin;
 		while (end != this->end() && *end != '\n')
-			end++;
-		if (end != this->end())
 			end++;
 		return end;
 	}

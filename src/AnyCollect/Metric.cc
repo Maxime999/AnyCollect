@@ -75,12 +75,18 @@ namespace AnyCollect {
 
 
 	void Metric::setNewValue(double value, bool computeRate, double unitsPerSecondFactor) noexcept {
-		if (computeRate) {
+		if (computeRate)
 			this->value_ = value - this->previousValue_;
-			this->previousValue_ = value;
-		} else {
+		else
 			this->value_ = value;
-		}
+		this->previousValue_ = value;
+		this->value_ *= unitsPerSecondFactor;
+	}
+
+	void Metric::updateValue(double value, double unitsPerSecondFactor) noexcept {
+		this->value_ /= unitsPerSecondFactor;
+		this->value_ += value;
+		this->previousValue_ += value;
 		this->value_ *= unitsPerSecondFactor;
 	}
 

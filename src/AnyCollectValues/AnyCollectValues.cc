@@ -36,13 +36,17 @@ std::ostream &operator<<(std::ostream &stream,
 
 
 void printMetric(const AnyCollect::Metric& m) {
-	std::cout << "{  Name: [ ";
-	for (const auto& part : m.name())
-		std::cout << "'" << part << "' ";
-	std::cout << "]    value: '" << m.value() << "'    t: '" << m.timestamp() << "'    unit: '" << m.unit() << "'    tags: [ ";
+	std::string name = m.name()[0];
+	for (size_t i = 1; i < m.name().size(); i++)
+		name += "/" + m.name()[i];
+	std::string tags;
 	for (const auto& [k, v] : m.tags())
-		std::cout << "'" << k << "'='" << v << "' ";
-	std::cout << "]" << std::endl;
+		tags += "'" + k + "'='" + v + "'";
+	std::cout << std::setw(54) << std::left << name;
+	std::cout << std::setw(20) << std::right << std::setprecision(18) << m.value() << " ";
+	std::cout << std::setw(16) << std::left << m.unit();
+	std::cout << std::setw(54) << std::left << tags;
+	std::cout << std::endl;
 }
 
 
