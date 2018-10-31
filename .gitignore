@@ -6,5 +6,6 @@ output/*
 scripts/*
 third_party/*
 !third_party/snap-plugin-lib-cpp
+!third_party/pstreams
 
 .vscode
