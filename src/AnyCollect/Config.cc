@@ -19,14 +19,14 @@
 //
 
 #include "Config.h"
-#include "File.h"
+#include "Source.h"
 
 
 namespace AnyCollect {
 	Config::Config(const std::string& path) noexcept {
 		try {
-			File configFile = File{path};
-			configFile.read();
+			Source configFile = Source{path};
+			configFile.update();
 			if (configFile.contents().empty())
 				return;
 
@@ -40,26 +40,46 @@ namespace AnyCollect {
 		}
 	}
 
+
+	void from_json(const nlohmann::json& je, Config::expression& e) noexcept {
+		e.regex = getValue<Config::expression::regexType>(je, Config::expression::regexKey);
+		for (const auto& jem : getValue<Config::expression::metricsType>(je, Config::expression::metricsKey)) {
+			Config::expression::metric m;
+			m.name = getValue<Config::expression::metric::nameType>(jem, Config::expression::metric::nameKey);
+			m.value = getValue<Config::expression::metric::valueType>(jem, Config::expression::metric::valueKey);
+			m.unit = getValue<Config::expression::metric::unitType>(jem, Config::expression::metric::unitKey);
+			m.tags = getValue<Config::expression::metric::tagsType>(jem, Config::expression::metric::tagsKey);
+			m.computeRate = getValue<Config::expression::metric::computeRateType>(jem, Config::expression::metric::computeRateKey);
+			m.convertToUnitsPerSecond = getValue<Config::expression::metric::convertToUnitsPerSecondType>(jem, Config::expression::metric::convertToUnitsPerSecondKey);
+			e.metrics.push_back(std::move(m));
+		}
+	}
+
 	void from_json(const nlohmann::json& j, Config& c) noexcept {
-		for (const auto& jf : getValue<Config::filesType>(j, Config::filesKey)) {
-			Config::file f;
-			f.paths = getValue<Config::file::pathsType>(jf, Config::file::pathsKey);
-			for (const auto& jfe : getValue<Config::file::expressionsType>(jf, Config::file::expressionsKey)) {
-				Config::file::expression e;
-				e.regex = getValue<Config::file::expression::regexType>(jfe, Config::file::expression::regexKey);
-				for (const auto& jfem : getValue<Config::file::expression::metricsType>(jfe, Config::file::expression::metricsKey)) {
-					Config::file::expression::metric m;
-					m.name = getValue<Config::file::expression::metric::nameType>(jfem, Config::file::expression::metric::nameKey);
-					m.value = getValue<Config::file::expression::metric::valueType>(jfem, Config::file::expression::metric::valueKey);
-					m.unit = getValue<Config::file::expression::metric::unitType>(jfem, Config::file::expression::metric::unitKey);
-					m.tags = getValue<Config::file::expression::metric::tagsType>(jfem, Config::file::expression::metric::tagsKey);
-					m.computeRate = getValue<Config::file::expression::metric::computeRateType>(jfem, Config::file::expression::metric::computeRateKey);
-					m.convertToUnitsPerSecond = getValue<Config::file::expression::metric::convertToUnitsPerSecondType>(jfem, Config::file::expression::metric::convertToUnitsPerSecondKey);
-					e.metrics.push_back(std::move(m));
+		if (j.count(std::string(Config::filesKey)) > 0) {
+			for (const auto& jf : getValue<Config::filesType>(j, Config::filesKey)) {
+				Config::file f;
+				f.paths = getValue<Config::file::pathsType>(jf, Config::file::pathsKey);
+				for (const auto& jfe : getValue<Config::file::expressionsType>(jf, Config::file::expressionsKey)) {
+					Config::expression e;
+					from_json(jfe, e);
+					f.expressions.push_back(std::move(e));
 				}
-				f.expressions.push_back(std::move(e));
+				c.files.push_back(std::move(f));
 			}
-			c.files.push_back(std::move(f));
+		}
+		if (j.count(std::string(Config::commandsKey)) > 0) {
+			for (const auto& jp : getValue<Config::commandsType>(j, Config::commandsKey)) {
+				Config::command p;
+				p.program = getValue<Config::command::programType>(jp, Config::command::programKey);
+				p.arguments = getValue<Config::command::argumentsType>(jp, Config::command::argumentsKey);
+				for (const auto& jpe : getValue<Config::command::expressionsType>(jp, Config::command::expressionsKey)) {
+					Config::expression e;
+					from_json(jpe, e);
+					p.expressions.push_back(std::move(e));
+				}
+				c.commands.push_back(std::move(p));
+			}
 		}
 	}
 }

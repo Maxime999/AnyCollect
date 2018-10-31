@@ -25,7 +25,7 @@
 #include <regex>
 #include <vector>
 
-#include "File.h"
+#include "Source.h"
 #include "Expression.h"
 #include "Matcher.h"
 #include "Metric.h"
@@ -52,15 +52,15 @@ namespace AnyCollect {
 			double unitsPerSecondFactor_;
 			size_t roundKey_;
 
-			std::vector<std::shared_ptr<File>> files_;
+			std::vector<std::shared_ptr<Source>> sources_;
 			std::vector<std::shared_ptr<Expression>> expressions_;
 			std::vector<std::shared_ptr<Matcher>> matchers_;
 			std::map<size_t, Metric> metrics_;
 			std::vector<const Metric*> updatedMetrics_;
 
-			void readFiles() noexcept;
+			void updateSources() noexcept;
 			void computeMatches() noexcept;
-			void parseData(const File& file, const std::cmatch& match, const Matcher& matcher) noexcept;
+			void parseData(const Source& source, const std::cmatch& match, const Matcher& matcher) noexcept;
 
 		public:
 			Controller(ControllerDelegate& delegate) noexcept;

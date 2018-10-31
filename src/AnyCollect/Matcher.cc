@@ -26,6 +26,15 @@
 namespace AnyCollect {
 	Matcher::Matcher() noexcept { }
 
+	Matcher::Matcher(const Config::expression::metric& config) noexcept :
+		name_(config.name),
+		value_(config.value),
+		unit_(config.unit),
+		tags_(config.tags),
+		computeRate_(config.computeRate),
+		convertToUnitsPerSecond_(config.convertToUnitsPerSecond)
+	{ }
+
 
 	const std::vector<std::string>& Matcher::name() const noexcept {
 		return this->name_;

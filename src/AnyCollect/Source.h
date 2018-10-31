@@ -1,7 +1,7 @@
 //
-// File.h
+// Source.h
 //
-// Created on October 25th 2018
+// Created on October 31st 2018
 //
 // Copyright 2018 CFM (www.cfm.fr)
 //
@@ -26,16 +26,26 @@
 #include <string_view>
 #include <vector>
 
+#include <pstreams/pstream.h>
 
+#include "Config.h"
 #include "Expression.h"
 
 
 namespace AnyCollect {
-	class File {
+	class Source {
+		public:
+			enum SourceType {
+				SourceTypeFile,
+				SourceTypeCommand,
+			};
+
 		protected:
+			SourceType type_;
 			std::string path_;
 			std::vector<std::string> pathParts_;
 			std::ifstream file_;
+			redi::ipstream process_;
 			std::vector<char> buffer_;
 
 			std::string_view contents_;
@@ -43,11 +53,16 @@ namespace AnyCollect {
 
 			std::vector<std::shared_ptr<Expression>> expressions_;
 
+			bool readFile(bool firstTime = false);
+			bool executeCommand(bool firstTime = false);
+
 		public:
-			File(const std::string& path) noexcept;
+			Source(const std::string& filePath) noexcept;
+			Source(const std::string& program, const std::vector<std::string>& arguments) noexcept;
 
 			static std::vector<std::string> filePathsMatchingGlobbingPattern(const std::string& pattern) noexcept;
 
+			SourceType type();
 			const std::string& path() const noexcept;
 			const std::vector<std::string>& pathParts() const noexcept;
 			const std::string_view& contents() const noexcept;
@@ -56,7 +71,7 @@ namespace AnyCollect {
 			const std::vector<std::shared_ptr<Expression>>& expressions() const noexcept;
 
 			bool reset() noexcept;
-			bool read() noexcept;
+			bool update() noexcept;
 
 			std::string_view::const_iterator begin() const noexcept;
 			std::string_view::const_iterator end() const noexcept;

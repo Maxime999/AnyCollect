@@ -27,6 +27,7 @@
 #include <string_view>
 #include <vector>
 
+#include "Config.h"
 #include "Metric.h"
 
 using namespace std::literals;
@@ -48,6 +49,7 @@ namespace AnyCollect {
 
 		public:
 			Matcher() noexcept;
+			Matcher(const Config::expression::metric& config) noexcept;
 
 			const std::vector<std::string>& name() const noexcept;
 			const std::string& value() const noexcept;

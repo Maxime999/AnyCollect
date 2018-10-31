@@ -30,49 +30,67 @@ using namespace std::literals;
 
 namespace AnyCollect {
 	struct Config {
-		struct file {
-			struct expression {
-				struct metric {
-					static constexpr std::string_view nameKey = "Name"sv;
-					using nameType = std::vector<std::string>;
-					static constexpr std::string_view valueKey = "Value"sv;
-					using valueType = std::string;
-					static constexpr std::string_view unitKey = "Unit"sv;
-					using unitType = std::string;
-					static constexpr std::string_view tagsKey = "Tags"sv;
-					using tagsType = std::map<std::string, std::string>;
-					static constexpr std::string_view computeRateKey = "ComputeRate"sv;
-					using computeRateType = bool;
-					static constexpr std::string_view convertToUnitsPerSecondKey = "ConvertToUnitsPerSecond"sv;
-					using convertToUnitsPerSecondType = bool;
+		struct expression {
+			struct metric {
+				static constexpr std::string_view nameKey = "Name"sv;
+				using nameType = std::vector<std::string>;
+				static constexpr std::string_view valueKey = "Value"sv;
+				using valueType = std::string;
+				static constexpr std::string_view unitKey = "Unit"sv;
+				using unitType = std::string;
+				static constexpr std::string_view tagsKey = "Tags"sv;
+				using tagsType = std::map<std::string, std::string>;
+				static constexpr std::string_view computeRateKey = "ComputeRate"sv;
+				using computeRateType = bool;
+				static constexpr std::string_view convertToUnitsPerSecondKey = "ConvertToUnitsPerSecond"sv;
+				using convertToUnitsPerSecondType = bool;
 
-					nameType name;
-					valueType value;
-					unitType unit;
-					tagsType tags;
-					computeRateType computeRate;
-					convertToUnitsPerSecondType convertToUnitsPerSecond;
-				};
-				static constexpr std::string_view regexKey = "Regex"sv;
-				using regexType = std::string;
-				static constexpr std::string_view metricsKey = "Metrics"sv;
-				using metricsType = std::vector<nlohmann::json>;
-
-				regexType regex;
-				std::vector<metric> metrics;
+				nameType name;
+				valueType value;
+				unitType unit;
+				tagsType tags;
+				computeRateType computeRate;
+				convertToUnitsPerSecondType convertToUnitsPerSecond;
 			};
+			static constexpr std::string_view regexKey = "Regex"sv;
+			using regexType = std::string;
+			static constexpr std::string_view metricsKey = "Metrics"sv;
+			using metricsType = std::vector<nlohmann::json>;
+
+			regexType regex;
+			std::vector<Config::expression::metric> metrics;
+		};
+
+		struct file {
 			static constexpr std::string_view pathsKey = "Paths"sv;
 			using pathsType = std::vector<std::string>;
 			static constexpr std::string_view expressionsKey = "Expressions"sv;
 			using expressionsType = std::vector<nlohmann::json>;
 
 			pathsType paths;
-			std::vector<expression> expressions;
+			std::vector<Config::expression> expressions;
 		};
+
+		struct command {
+			static constexpr std::string_view programKey = "Program"sv;
+			using programType = std::string;
+			static constexpr std::string_view argumentsKey = "Arguments"sv;
+			using argumentsType = std::vector<std::string>;
+			static constexpr std::string_view expressionsKey = "Expressions"sv;
+			using expressionsType = std::vector<nlohmann::json>;
+
+			programType program;
+			argumentsType arguments;
+			std::vector<Config::expression> expressions;
+		};
+
 		static constexpr std::string_view filesKey = "Files"sv;
 		using filesType = std::vector<nlohmann::json>;
+		static constexpr std::string_view commandsKey = "Commands"sv;
+		using commandsType = std::vector<nlohmann::json>;
 
-		std::vector<file> files;
+		std::vector<Config::file> files;
+		std::vector<Config::command> commands;
 
 		Config(const std::string& path) noexcept;
     };

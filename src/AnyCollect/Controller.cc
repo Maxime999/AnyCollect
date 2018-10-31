@@ -56,33 +56,39 @@ namespace AnyCollect {
 			return;
 
 		Config config = Config{configPath};
-		this->files_.clear();
+		this->sources_.clear();
 		this->expressions_.clear();
 		this->matchers_.clear();
 		size_t fileIndex = 0;
 
 		for (const auto& file : config.files) {
 			for (const auto& path : file.paths) {
-				auto paths = File::filePathsMatchingGlobbingPattern(path);
+				auto paths = Source::filePathsMatchingGlobbingPattern(path);
 				for (const auto& p : paths)
-					this->files_.push_back(std::make_shared<File>(p));
+					this->sources_.push_back(std::make_shared<Source>(p));
 			}
 			for (const auto& expression : file.expressions) {
 				this->expressions_.push_back(std::make_shared<Expression>(expression.regex));
 				for (const auto& metric : expression.metrics) {
-					this->matchers_.push_back(std::make_shared<Matcher>());
-					this->matchers_.back()->setName(metric.name);
-					this->matchers_.back()->setValue(metric.value);
-					this->matchers_.back()->setUnit(metric.unit);
-					this->matchers_.back()->setTags(metric.tags);
-					this->matchers_.back()->setComputeRate(metric.computeRate);
-					this->matchers_.back()->setConvertToUnitsPerSecond(metric.convertToUnitsPerSecond);
+					this->matchers_.push_back(std::make_shared<Matcher>(metric));
 					this->expressions_.back()->matchers().push_back(this->matchers_.back());
 				}
-				for (auto itr = this->files_.begin() + fileIndex; itr != this->files_.end(); itr++)
+				for (auto itr = this->sources_.begin() + fileIndex; itr != this->sources_.end(); itr++)
 					(*itr)->expressions().push_back(this->expressions_.back());
 			}
-			fileIndex = this->files_.size();
+			fileIndex = this->sources_.size();
+		}
+
+		for (const auto& command : config.commands) {
+			this->sources_.push_back(std::make_shared<Source>(command.program, command.arguments));
+			for (const auto& expression : command.expressions) {
+				this->expressions_.push_back(std::make_shared<Expression>(expression.regex));
+				for (const auto& metric : expression.metrics) {
+					this->matchers_.push_back(std::make_shared<Matcher>(metric));
+					this->expressions_.back()->matchers().push_back(this->matchers_.back());
+				}
+				this->sources_.back()->expressions().push_back(this->expressions_.back());
+			}
 		}
 	}
 
@@ -100,13 +106,13 @@ namespace AnyCollect {
 
 
 	std::vector<const Metric*> Controller::availableMetrics() noexcept {
-		if (this->isCollecting_ || this->files_.empty() || this->expressions_.empty() || this->matchers_.empty())
+		if (this->isCollecting_ || this->sources_.empty() || this->expressions_.empty() || this->matchers_.empty())
 			return {};
 
 		this->roundKey_ = this->roundKey_ - 10;
 
 		this->updatedMetrics_.clear();
-		this->readFiles();
+		this->updateSources();
 		this->computeMatches();
 
 		this->updatedMetrics_.clear();
@@ -118,7 +124,7 @@ namespace AnyCollect {
 	}
 
 	void Controller::collectMetrics() noexcept {
-		if (this->isCollecting_ || this->files_.empty() || this->expressions_.empty() || this->matchers_.empty())
+		if (this->isCollecting_ || this->sources_.empty() || this->expressions_.empty() || this->matchers_.empty())
 			return;
 #if GPERFTOOLS_CPU_PROFILE
 		ProfilerStart("/tmp/aa.prof");
@@ -128,7 +134,7 @@ namespace AnyCollect {
 		auto startTime = std::chrono::steady_clock::now();
 
 		this->updatedMetrics_.clear();
-		this->readFiles();
+		this->updateSources();
 		this->computeMatches();
 
 		while (true) {
@@ -136,7 +142,7 @@ namespace AnyCollect {
 			startTime = std::chrono::steady_clock::now();
 
 			this->updatedMetrics_.clear();
-			this->readFiles();
+			this->updateSources();
 			this->computeMatches();
 
 			this->delegate_.contollerCollectedMetrics(*this, this->updatedMetrics_);
@@ -154,26 +160,26 @@ namespace AnyCollect {
 	}
 
 
-	void Controller::readFiles() noexcept {
-		for (auto& file : this->files_)
-			file->read();
+	void Controller::updateSources() noexcept {
+		for (auto& source : this->sources_)
+			source->update();
 	}
 
 	void Controller::computeMatches() noexcept {
-		for (const auto& file : this->files_) {
-			auto begin = file->begin();
-			while(begin != file->end()) {
-				auto end = file->getLine(begin);
+		for (const auto& source : this->sources_) {
+			auto begin = source->begin();
+			while(begin != source->end()) {
+				auto end = source->getLine(begin);
 				if (begin != end) {
-					for (const auto& expression : file->expressions()) {
+					for (const auto& expression : source->expressions()) {
 						auto& match = expression->apply(begin, end);
 						if (!match.empty()) {
 							for (const auto& matcher : expression->matchers())
-								this->parseData(*file, match, *matcher);
+								this->parseData(*source, match, *matcher);
 						}
 					}
 				}
-				if (end != file->end())
+				if (end != source->end())
 					begin = end + 1;
 				else
 					break;
@@ -182,11 +188,11 @@ namespace AnyCollect {
 		this->roundKey_++;
 	}
 
-	void Controller::parseData(const File& file, const std::cmatch& match, const Matcher& matcher) noexcept {
-		auto value = matcher.getValue(match, file.pathParts());
+	void Controller::parseData(const Source& source, const std::cmatch& match, const Matcher& matcher) noexcept {
+		auto value = matcher.getValue(match, source.pathParts());
 		if (!value.has_value())
 			return;
-		auto newMetric = matcher.getMetric(match, file.pathParts());
+		auto newMetric = matcher.getMetric(match, source.pathParts());
 		if (!newMetric.has_value())
 			return;
 
@@ -204,7 +210,7 @@ namespace AnyCollect {
 			metric.setNewValue(value.value(), matcher.computeRate(), matcher.convertToUnitsPerSecond() ? this->unitsPerSecondFactor_ : 1.0);
 		else
 			metric.updateValue(value.value(), matcher.convertToUnitsPerSecond() ? this->unitsPerSecondFactor_ : 1.0);
-		metric.setTimestamp(file.timestamp());
+		metric.setTimestamp(source.timestamp());
 		metric.setRoundKey(this->roundKey_);
 	}
 

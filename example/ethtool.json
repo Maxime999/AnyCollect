@@ -1,0 +1,26 @@
+{
+	"Commands": [
+		{
+			"Program": "/bin/sh",
+			"Arguments": [
+				"-c",
+				"'for iface in $(ip l | cut -d \":\" -f2 | grep \" \"); do ethtool -S $iface | sed -e \"s/^/$iface:/\"; done'"
+			],
+			"Expressions": [
+				{
+					"Regex": "^(\\w+):\\s*([\\S]+): (\\d+)$",
+					"Metrics": [
+						{
+							"Name": ["ethtool", "$2"],
+							"Value": "$3",
+							"Unit": "",
+							"Tags": {"interface": "$1"},
+							"ComputeRate": true,
+							"ConvertToUnitsPerSecond": true
+						}
+					]
+				}
+			]
+		}
+	]
+}
