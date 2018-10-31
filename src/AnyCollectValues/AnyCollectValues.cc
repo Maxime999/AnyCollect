@@ -54,12 +54,12 @@ struct AnyCollectValues : public AnyCollect::ControllerDelegate {
 	size_t iterationCount;
 
 #if PRINT_METRICS
-	void contollerCollectedMetrics(const AnyCollect::Controller& , const std::vector<AnyCollect::Metric*>& metrics) override {
+	void contollerCollectedMetrics(const AnyCollect::Controller& , const std::vector<const AnyCollect::Metric*>& metrics) override {
 		for (const auto& m : metrics)
 			printMetric(*m);
 		std::cout << std::endl << "----------------" << std::endl << std::endl;
 #else
-	void contollerCollectedMetrics(const AnyCollect::Controller& , const std::vector<AnyCollect::Metric*>& ) override {
+	void contollerCollectedMetrics(const AnyCollect::Controller& , const std::vector<const AnyCollect::Metric*>& ) override {
 #endif
 	}
 

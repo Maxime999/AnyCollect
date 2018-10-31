@@ -73,7 +73,7 @@ namespace AnyCollect {
 			snapMetric.add_tag(tag);
 		snapMetric.set_data(metric.value());
 		snapMetric.set_timestamp(metric.timestamp());
-		return std::move(snapMetric);
+		return snapMetric;
 	}
 
 
@@ -138,7 +138,7 @@ namespace AnyCollect {
 	}
 
 
-	void SnapInterface::contollerCollectedMetrics(const AnyCollect::Controller& , const std::vector<AnyCollect::Metric*>& metrics) {
+	void SnapInterface::contollerCollectedMetrics(const AnyCollect::Controller& , const std::vector<const AnyCollect::Metric*>& metrics) {
 		this->metricsToSend_.clear();
 		for (const auto& metric : metrics) {
 			auto itr = this->metrics_.find(metric->key());

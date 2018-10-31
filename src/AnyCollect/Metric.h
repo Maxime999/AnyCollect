@@ -40,7 +40,12 @@ namespace AnyCollect {
 			std::map<std::string, std::string> tags_;
 
 		public:
+			Metric() = delete;
 			Metric(const std::vector<std::string>& name, const std::map<std::string, std::string>& tags, const std::string& unit = "") noexcept;
+			Metric(std::vector<std::string>&& name, std::map<std::string, std::string>&& tags, std::string&& unit = "") noexcept;
+			Metric(const Metric& other) noexcept;
+			Metric(Metric&& other) noexcept;
+			Metric& operator=(Metric other) noexcept;
 
 			static size_t generateKey(const std::vector<std::string>& name, const std::map<std::string, std::string>& tags);
 			static size_t generateKey(const Metric& metric);

@@ -51,7 +51,7 @@ namespace AnyCollect {
 			const std::string& path() const noexcept;
 			const std::vector<std::string>& pathParts() const noexcept;
 			const std::string_view& contents() const noexcept;
-			const std::chrono::system_clock::time_point& timestamp() const noexcept;
+			std::chrono::system_clock::time_point timestamp() const noexcept;
 			std::vector<std::shared_ptr<Expression>>& expressions() noexcept;
 			const std::vector<std::shared_ptr<Expression>>& expressions() const noexcept;
 

@@ -66,7 +66,7 @@ namespace AnyCollect {
 		return this->contents_;
 	}
 
-	const std::chrono::system_clock::time_point& File::timestamp() const noexcept {
+	std::chrono::system_clock::time_point File::timestamp() const noexcept {
 		return this->timestamp_;
 	}
 

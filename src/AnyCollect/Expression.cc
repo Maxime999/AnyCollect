@@ -22,6 +22,8 @@
 
 
 namespace AnyCollect {
+	std::cmatch Expression::match{};
+	
 	Expression::Expression(const std::string& pattern) noexcept :
 		regex_(pattern, std::regex_constants::ECMAScript | std::regex_constants::optimize)
 	{ }
@@ -35,8 +37,7 @@ namespace AnyCollect {
 		return this->matchers_;
 	}
 
-	std::cmatch Expression::apply(std::string_view::const_iterator begin, std::string_view::const_iterator end) {
-		std::cmatch match;
+	const std::cmatch& Expression::apply(std::string_view::const_iterator begin, std::string_view::const_iterator end) {
 		std::regex_search(begin, end, match, this->regex_, std::regex_constants::match_default);
 		return match;
 	}

@@ -72,7 +72,7 @@ namespace AnyCollect {
 
 			void stream_metrics() override final;
 
-			void contollerCollectedMetrics(const Controller& controller, const std::vector<Metric*>& metrics) override final;
+			void contollerCollectedMetrics(const Controller& controller, const std::vector<const Metric*>& metrics) override final;
 			bool contollerShouldStopCollectingMetrics(const Controller& controller) override final;
 
 	};

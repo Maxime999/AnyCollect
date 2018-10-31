@@ -18,6 +18,8 @@
 // limitations under the License.
 //
 
+#include <iostream>
+
 #include "Metric.h"
 
 
@@ -34,6 +36,51 @@ namespace AnyCollect {
 	}
 
 
+	Metric::Metric(std::vector<std::string>&& name, std::map<std::string, std::string>&& tags, std::string&& unit) noexcept :
+		roundKey_(-1),
+		name_(name),
+		unit_(unit),
+		tags_(tags)
+	{
+		this->key_ = Metric::generateKey(this->name_, this->tags_);
+	}
+
+
+	Metric::Metric(const Metric& other) noexcept :
+		key_(other.key_),
+		roundKey_(other.roundKey_),
+		name_(other.name_),
+		previousValue_(other.previousValue_),
+		value_(other.value_),
+		timestamp_(other.timestamp_),
+		unit_(other.unit_),
+		tags_(other.tags_)
+	{ }
+
+	Metric::Metric(Metric&& other) noexcept :
+		key_(other.key_),
+		roundKey_(other.roundKey_),
+		name_(std::move(other.name_)),
+		previousValue_(other.previousValue_),
+		value_(other.value_),
+		timestamp_(other.timestamp_),
+		unit_(std::move(other.unit_)),
+		tags_(std::move(other.tags_))
+	{ }
+
+	Metric& Metric::operator=(Metric other) noexcept {
+		this->key_ = other.key_;
+		this->roundKey_ = other.roundKey_;
+		std::swap(this->name_, other.name_);
+		this->previousValue_ = other.previousValue_;
+		this->value_ = other.value_;
+		this->timestamp_ = other.timestamp_;
+		std::swap(this->unit_, other.unit_);
+		std::swap(this->tags_, other.tags_);
+		return *this;
+	}
+
+
 	size_t Metric::generateKey(const std::vector<std::string>& name, const std::map<std::string, std::string>& tags) {
 		std::string hash;
 		for (const auto& n : name)
@@ -42,7 +89,6 @@ namespace AnyCollect {
 			hash.append(k);
 			hash.append(v);
 		}
-
 		return Metric::hasher(hash);
 	}
 

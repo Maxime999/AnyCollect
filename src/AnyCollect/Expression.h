@@ -29,6 +29,7 @@
 namespace AnyCollect {
 	class Expression {
 		protected:
+			static std::cmatch match;
 			std::regex regex_;
 			std::vector<std::shared_ptr<Matcher>> matchers_;
 
@@ -38,6 +39,6 @@ namespace AnyCollect {
 			std::vector<std::shared_ptr<Matcher>>& matchers() noexcept;
 			const std::vector<std::shared_ptr<Matcher>>& matchers() const noexcept;
 
-			std::cmatch apply(std::string_view::const_iterator begin, std::string_view::const_iterator end);
+			const std::cmatch& apply(std::string_view::const_iterator begin, std::string_view::const_iterator end);
 	};
 }

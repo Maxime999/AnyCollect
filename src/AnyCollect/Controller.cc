@@ -20,6 +20,10 @@
 
 #include <thread>
 
+#if GPERFTOOLS_CPU_PROFILE
+#include <gperftools/profiler.h>
+#endif
+
 #include "Config.h"
 #include "Controller.h"
 
@@ -95,7 +99,7 @@ namespace AnyCollect {
 	}
 
 
-	std::vector<Metric*> Controller::availableMetrics() noexcept {
+	std::vector<const Metric*> Controller::availableMetrics() noexcept {
 		if (this->isCollecting_ || this->files_.empty() || this->expressions_.empty() || this->matchers_.empty())
 			return {};
 
@@ -106,7 +110,7 @@ namespace AnyCollect {
 		this->computeMatches();
 
 		this->updatedMetrics_.clear();
-		for (auto& itr : this->metrics_)
+		for (const auto& itr : this->metrics_)
 			this->updatedMetrics_.push_back(&itr.second);
 
 		this->roundKey_ += 10;
@@ -162,7 +166,7 @@ namespace AnyCollect {
 				auto end = file->getLine(begin);
 				if (begin != end) {
 					for (const auto& expression : file->expressions()) {
-						std::cmatch match = expression->apply(begin, end);
+						auto& match = expression->apply(begin, end);
 						if (!match.empty()) {
 							for (const auto& matcher : expression->matchers())
 								this->parseData(*file, match, *matcher);
@@ -189,7 +193,7 @@ namespace AnyCollect {
 		auto itr = this->metrics_.find(newMetric.value().key());
 		bool isNew = (itr == this->metrics_.end());
 		if (isNew)
-			itr = this->metrics_.insert(this->metrics_.begin(), {newMetric.value().key(), std::move(newMetric.value())});
+			itr = this->metrics_.insert_or_assign(this->metrics_.begin(), newMetric.value().key(), std::move(newMetric.value()));
 
 		Metric& metric = itr->second;
 		isNew = (isNew || (metric.roundKey() != this->roundKey_ - 1));

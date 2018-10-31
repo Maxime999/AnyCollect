@@ -162,7 +162,7 @@ namespace AnyCollect {
 			if (keyCopy.empty() || valueCopy.empty())
 				return std::optional<std::map<std::string, std::string>>{};
 			else
-				tags.insert({std::move(keyCopy), std::move(valueCopy)});
+				tags.insert_or_assign(std::move(keyCopy), std::move(valueCopy));
 		}
 		return std::make_optional(std::move(tags));
 	}

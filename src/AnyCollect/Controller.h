@@ -56,7 +56,7 @@ namespace AnyCollect {
 			std::vector<std::shared_ptr<Expression>> expressions_;
 			std::vector<std::shared_ptr<Matcher>> matchers_;
 			std::map<size_t, Metric> metrics_;
-			std::vector<Metric*> updatedMetrics_;
+			std::vector<const Metric*> updatedMetrics_;
 
 			void readFiles() noexcept;
 			void computeMatches() noexcept;
@@ -73,13 +73,13 @@ namespace AnyCollect {
 			void loadConfigFromFile(const std::string& configPath);
 			void setSamplingInterval(std::chrono::seconds interval) noexcept;
 
-			std::vector<Metric*> availableMetrics() noexcept;
+			std::vector<const Metric*> availableMetrics() noexcept;
 			void collectMetrics() noexcept;
 	};
 
 	class ControllerDelegate {
 		public:
-			virtual void contollerCollectedMetrics(const Controller& controller, const std::vector<Metric*>& metrics) = 0;
+			virtual void contollerCollectedMetrics(const Controller& controller, const std::vector<const Metric*>& metrics) = 0;
 			virtual bool contollerShouldStopCollectingMetrics(const Controller& controller) = 0;
 	};
 }
