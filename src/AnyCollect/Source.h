@@ -53,8 +53,8 @@ namespace AnyCollect {
 
 			std::vector<std::shared_ptr<Expression>> expressions_;
 
-			bool readFile(bool firstTime = false);
-			bool executeCommand(bool firstTime = false);
+			size_t readFile(bool firstTime = false);
+			size_t executeCommand(bool firstTime = false);
 
 		public:
 			Source(const std::string& filePath) noexcept;

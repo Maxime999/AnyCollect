@@ -94,14 +94,14 @@ namespace AnyCollect {
 	}
 
 
-	bool Source::readFile(bool firstTime) {
+	size_t Source::readFile(bool firstTime) {
 		errno = 0;
 		if (firstTime) {
 			this->file_ = std::ifstream(this->path_, std::ios::binary);
 			if (errno) {
 				perror(std::string(this->path_).append(": Error opening file").c_str());
 				errno = 0;
-				return false;
+				return -1;
 			}
 		}
 		this->file_.clear();
@@ -110,19 +110,22 @@ namespace AnyCollect {
 		if (errno) {
 			perror(std::string(this->path_).append(": Error reading file").c_str());
 			errno = 0;
-			return false;
+			return -1;
 		}
-		return true;
+		return this->file_.gcount();
 	}
 
-	bool Source::executeCommand(bool ) {
+	size_t Source::executeCommand(bool ) {
 		errno = 0;
 		if (this->process_.is_open())
 			this->process_.close();
 		this->process_.clear();
 		this->process_.open(this->path_, redi::pstreambuf::pstdout | redi::pstreambuf::pstderr);
-		this->process_.read(this->buffer_.data(), this->buffer_.size());
-		return !this->process_.bad();
+		this->process_.out().read(this->buffer_.data(), this->buffer_.size());
+		if (this->process_.bad())
+			return -1;
+		else
+			return this->process_.gcount();
 	}
 
 
@@ -155,20 +158,17 @@ namespace AnyCollect {
 		size_t size = 0;
 		switch (this->type_) {
 			case SourceTypeFile:
-				if (!this->readFile(true)) {
-					if (!this->reset())
-						return false;
-				}
-				size = this->file_.gcount();
+				size = this->readFile(false);
 				break;
 			case SourceTypeCommand:
-				if (!this->executeCommand(true)) {
-					if (!this->reset())
-						return false;
-				}
-				size = this->process_.gcount();
+				size = this->executeCommand(false);
 				break;
 		}
+		if (size == ((size_t)-1)) {
+			if (!this->reset())
+				return false;
+		}
+
 		this->buffer_[size] = '\0';
 		this->contents_ = std::string_view{this->buffer_.data(), size};
 		this->timestamp_ = std::chrono::system_clock::now();

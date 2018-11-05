@@ -203,13 +203,13 @@ namespace AnyCollect {
 
 		Metric& metric = itr->second;
 		isNew = (isNew || (metric.roundKey() != this->roundKey_ - 1));
-		if (!isNew || !matcher.computeRate())
-			this->updatedMetrics_.push_back(&metric);
-
-		if (metric.roundKey() != this->roundKey_)
+		if (metric.roundKey() != this->roundKey_) {
 			metric.setNewValue(value.value(), matcher.computeRate(), matcher.convertToUnitsPerSecond() ? this->unitsPerSecondFactor_ : 1.0);
-		else
+			if ((!isNew || !matcher.computeRate()))
+				this->updatedMetrics_.push_back(&metric);
+		} else {
 			metric.updateValue(value.value(), matcher.convertToUnitsPerSecond() ? this->unitsPerSecondFactor_ : 1.0);
+		}
 		metric.setTimestamp(source.timestamp());
 		metric.setRoundKey(this->roundKey_);
 	}
