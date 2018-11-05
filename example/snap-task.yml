@@ -1,0 +1,19 @@
+---
+  version: 1
+  schedule:
+    type: "streaming"
+  max-failures: 10
+  workflow:
+    collect:
+      metrics:
+        /cfm/anycollect/*: {}
+      config:
+        /cfm:
+          # ConfigFile: "/path/to/anycollect/config.json"
+          SamplingInterval: 1
+          # MaxMetricsBuffer: 0
+          # MaxCollectDuration: 0
+      publish:
+        - plugin_name: "file"
+          config:
+            file: "/tmp/metrics.log"
