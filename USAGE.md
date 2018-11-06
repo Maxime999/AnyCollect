@@ -8,8 +8,9 @@
     - [Expressions](#expressions)
     - [Metrics and substitution](#metrics-and-substitution)
     - [Examples](#examples)
-      - [Basic matching](#basic-matching)
+      - [Basic file matching](#basic-file-matching)
       - [Multiple metrics on one line:](#multiple-metrics-on-one-line)
+      - [Command output matching](#command-output-matching)
   - [AnyCollectValues Standalone interface](#anycollectvalues-standalone-interface)
   - [Snap Configuration](#snap-configuration)
     - [Global configuration](#global-configuration)
@@ -59,6 +60,8 @@ Metrics from command output are specified in the top-level `Command` array. It r
  - `Arguments`, an array of additional arguments to give to the program
  - `Expressions`, an array of expressions (see [below](#expressions)) used to match command output
 
+Prior to execution, program and arguments are concatenated with spaces in between.
+
 
 ### Expressions
 An expression is defined by two fields:
@@ -67,9 +70,9 @@ An expression is defined by two fields:
 
 A metric template is in turn defined in JSON by six fields:
  - `Name`, an array of strings representing the name of the metric
- - `Value`, a string
- - `Unit`, a string
- - `Tags`, a map associating strings to strings
+ - `Value`, a string representing the value of the metric
+ - `Unit`, a string representing the value's unit
+ - `Tags`, a map associating strings to strings adding metadata to a metric
  - `ComputeRate`, a boolean indicating whether the variation of the value, rather than the value, should be collected
  - `ConvertToUnitsPerSecond`, a boolean indicating whether the value should be converted to units per second
 
@@ -81,44 +84,44 @@ One expression may have more than one metric template to facilitate parsing: if 
 ### Metrics and substitution
 String fields of a metric template (`Name`, `Value`, `Unit` and `Tags`) are subject to variable substitution:
  - `$1`, `$2`, `$3`, etc. will be replaced by the regex submatch with the same index. `$0` matches the whole match
- - `$path_0`, `$path_1`, `$path_2`, etc. will be replaced by the path component at the same index
+ - for file content sources, `$path_0`, `$path_1`, `$path_2`, etc. will be replaced by the path component at the same index
 
-**After substitution, a metric is defined by its `Name` and `Tags` fields**: if two metrics have the same `Name` and `Tags` fields, they are considered to represent the same thing. This equivalence is used to compute rates from an iteration to the next, and in case two metrics are found to be equivalent during the same iteration then their values are added.
+**After substitution, a metric is defined by its `Name` and `Tags` fields**: if two metrics have the same `Name` and `Tags` fields, they are considered to represent the same thing. The `Unit` field is not taken into account. This equivalence is used to compute rates from an iteration to the next, and in case two metrics are found to be equivalent during the same iteration then their values are added.
 
 In the end, **the `Value` field must be convertible to a number** (either integer or floating point).
 
-**If any of `Name`, `Value`, or `Tags` field is empty after substitution, the metric is considered deficient and is dropped.**
+**If any of `Name`, `Value`, or `Tags` field is empty after substitution, the metric is considered deficient and is dropped.** The `Unit` field may be empty.
 
 
 ### Examples
 **Please refer to the examples config files in the `example` directory of this repo.**
 
-#### Basic matching
+#### Basic file matching
 Memory stats in `/proc/meminfo`
 ```
-MemTotal: 13192071 kB
+MemTotal: 949448 kB
 ```
 
 Regex: `^(\w+) (\d+) (\w)B$`
 
 Matches:
-| Index | Submatch                  |
-|-------|---------------------------|
-| 0     | `MemTotal: 13192071 kB` |
-| 1     | `MemTotal`                     |
-| 2     | `13192071`                    |
+| Index | Submatch                |
+|-------|-------------------------|
+| 0     | `MemTotal: 949448 kB` |
+| 1     | `MemTotal`              |
+| 2     | `949448`              |
 | 3     | `k`                     |
 
 Metrics:
 | Template | Metric|
 |----------|-------|
-| <ul style="list-style: none;"> <li>Name: `["memory", "$1"]`,</li> <li>Value: `"$2"`,</li> <li>Unit: `"$3B"`,</li> <li>Tags: `{}`</li> </ul>   | <ul style="list-style: none;"> <li>Name: `["memory", "MemTotal"]`,</li> <li>Value: `13192071`,</li> <li>Unit: `"kB"`,</li> <li>Tags: `{}`</li> </ul>    |
+| <ul style="list-style: none;"> <li>Name: `["memory", "$1"]`,</li> <li>Value: `"$2"`,</li> <li>Unit: `"$3B"`,</li> <li>Tags: `{}`</li> </ul>   | <ul style="list-style: none;"> <li>Name: `["memory", "MemTotal"]`,</li> <li>Value: `949448`,</li> <li>Unit: `"kB"`,</li> <li>Tags: `{}`</li> </ul>    |
 
 
 #### Multiple metrics on one line:
 CPU stats in `/proc/stat`
 ```
-cpu  1357 9 224 1307735 4 0 3 0 0
+cpu  14574109 23322 24156706 688820875 542455 0 1102485 0 0
 ```
 
 Regex: `^cpu  (\d+) \d+ (\d+) (\d+)`
@@ -126,18 +129,43 @@ Regex: `^cpu  (\d+) \d+ (\d+) (\d+)`
 Matches:
 | Index | Submatch                  |
 |-------|---------------------------|
-| 0     | `cpu  1357 9 224 1307735` |
+| 0     | `cpu  14574109 23322 24156706 688820875` |
 | 1     | `cpu`                     |
-| 2     | `1357`                    |
-| 3     | `224`                     |
-| 4     | `1307735`                 |
+| 2     | `14574109`                    |
+| 3     | `24156706`                     |
+| 4     | `688820875`                 |
 
 Metrics:
 | Template | Metric|
 |----------|-------|
-| <ul style="list-style: none;"> <li>Name: `["cpu", "user"]`,</li> <li>Value: `"$1"`,</li> <li>Unit: `"jiffies"`,</li> <li>Tags: `{}`</li> </ul>   | <ul style="list-style: none;"> <li>Name: `["cpu", "user"]`,</li> <li>Value: `1357`,</li> <li>Unit: `"jiffies"`,</li> <li>Tags: `{}`</li> </ul>    |
-| <ul style="list-style: none;"> <li>Name: `["cpu", "system"]`,</li> <li>Value: `"$2"`,</li> <li>Unit: `"jiffies"`,</li> <li>Tags: `{}`</li> </ul> | <ul style="list-style: none;"> <li>Name: `["cpu", "system"]`,</li> <li>Value: `224`,</li> <li>Unit: `"jiffies"`,</li> <li>Tags: `{}`</li>  </ul>  |
-| <ul style="list-style: none;"> <li>Name: `["cpu", "idle"]`,</li> <li>Value: `"$3"`,</li> <li>Unit: `"jiffies"`,</li> <li>Tags: `{}`</li> </ul>   | <ul style="list-style: none;"> <li>Name: `["cpu", "idle"]`,</li> <li>Value: `1307735`,</li> <li>Unit: `"jiffies"`,</li> <li>Tags: `{}`</li> </ul> |
+| <ul style="list-style: none;"> <li>Name: `["cpu", "user"]`,</li> <li>Value: `"$1"`,</li> <li>Unit: `"jiffies"`,</li> <li>Tags: `{}`</li> </ul>   | <ul style="list-style: none;"> <li>Name: `["cpu", "user"]`,</li> <li>Value: `14574109`,</li> <li>Unit: `"jiffies"`,</li> <li>Tags: `{}`</li> </ul>    |
+| <ul style="list-style: none;"> <li>Name: `["cpu", "system"]`,</li> <li>Value: `"$2"`,</li> <li>Unit: `"jiffies"`,</li> <li>Tags: `{}`</li> </ul> | <ul style="list-style: none;"> <li>Name: `["cpu", "system"]`,</li> <li>Value: `24156706`,</li> <li>Unit: `"jiffies"`,</li> <li>Tags: `{}`</li>  </ul>  |
+| <ul style="list-style: none;"> <li>Name: `["cpu", "idle"]`,</li> <li>Value: `"$3"`,</li> <li>Unit: `"jiffies"`,</li> <li>Tags: `{}`</li> </ul>   | <ul style="list-style: none;"> <li>Name: `["cpu", "idle"]`,</li> <li>Value: `688820875`,</li> <li>Unit: `"jiffies"`,</li> <li>Tags: `{}`</li> </ul> |
+
+
+#### Command output matching
+Get network latency with `ping`
+```
+$ ping -c 1 -W 1 8.8.8.8
+PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+64 bytes from 8.8.8.8: icmp_seq=1 ttl=61 time=2.74 ms
+...
+```
+
+Regex: `bytes from ([\d.]+): .* time=([\d.]+) (\w+)$`
+
+Matches:
+| Index | Submatch                                               |
+|-------|--------------------------------------------------------|
+| 0     | `bytes from 8.8.8.8: icmp_seq=1 ttl=61 time=2.74 ms` |
+| 1     | `8.8.8.8`                                              |
+| 2     | `2.74`                                               |
+| 3     | `ms`                                                   |
+
+Metrics:
+| Template | Metric|
+|----------|-------|
+| <ul style="list-style: none;"> <li>Name: `["ping"]`,</li> <li>Value: `"$2"`,</li> <li>Unit: `"$3"`,</li> <li>Tags: `{ "host": "$1" }`</li> </ul>   | <ul style="list-style: none;"> <li>Name: `["ping"]`,</li> <li>Value: `2.74`,</li> <li>Unit: `"ms"`,</li> <li>Tags: `{ "host": "8.8.8.8" }`</li> </ul>    |
 
 
 ## AnyCollectValues Standalone interface

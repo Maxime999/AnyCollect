@@ -1,0 +1,26 @@
+{
+	"Commands": [
+		{
+			"Program": "/bin/ping",
+			"Arguments": [
+				"-c 1",
+				"8.8.8.8"
+			],
+			"Expressions": [
+				{
+					"Regex": "bytes from ([\\d.]+): .* time=([\\d.]+) (\\w+)$",
+					"Metrics": [
+						{
+							"Name": ["ping", "$1"],
+							"Value": "$2",
+							"Unit": "$3",
+							"Tags": {},
+							"ComputeRate": false,
+							"ConvertToUnitsPerSecond": false
+						}
+					]
+				}
+			]
+		}
+	]
+}
