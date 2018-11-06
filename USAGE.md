@@ -18,12 +18,16 @@
     - [Parameters](#parameters)
     - [Metrics](#metrics-1)
 
+**Please be careful about metric instantiation rules.** They are detailed below in [Metrics and substitution](#metrics-and-substitution).
+
+
 ## Metrics
 AnyCollect can gather metrics from two different kinds of sources:
  * Reading files from the filesystem
  * Executing commands
 
 Each of these sources have an array of expressions which are used to filter and match the contents. Each expression is a regex and an array of metrics templates, which use regex matches to form metrics.
+
 
 ### Sources
 Metrics are defined in a JSON file:
@@ -86,12 +90,11 @@ String fields of a metric template (`Name`, `Value`, `Unit` and `Tags`) are subj
  - `$1`, `$2`, `$3`, etc. will be replaced by the regex submatch with the same index. `$0` matches the whole match
  - for file content sources, `$path_0`, `$path_1`, `$path_2`, etc. will be replaced by the path component at the same index
 
-**After substitution, a metric is defined by its `Name` and `Tags` fields**: if two metrics have the same `Name` and `Tags` fields, they are considered to represent the same thing. The `Unit` field is not taken into account. This equivalence is used to compute rates from an iteration to the next, and in case two metrics are found to be equivalent during the same iteration then their values are added.
-
-In the end, **the `Value` field must be convertible to a number** (either integer or floating point).
-
-**If any of `Name`, `Value`, or `Tags` field is empty after substitution, the metric is considered deficient and is dropped.** The `Unit` field may be empty.
-
+**Important notes after substitution**:
+ - **A metric is defined by its `Name` and `Tags` fields**: if two metrics have the same `Name` and `Tags`, they are considered to represent the same thing. The `Unit` field is not taken into account. This equivalence is used to compute rates from an iteration to the next, and in case two metrics are found to be equivalent during the same iteration then their values are added.
+ - **The `Value` field must be convertible to a number** (either integer or floating point).
+ - **If any of `Name`, `Value`, or `Tags` field is empty, the metric is considered deficient and is dropped.** The `Unit` field may be empty.
+ - **The `Name` field should only contain lower-case alphanumeric characters and underscores `_`.** Upper-case letters will be converted to lower-case, and symbols will be replaced by underscores.
 
 ### Examples
 **Please refer to the examples config files in the `example` directory of this repo.**
@@ -105,12 +108,12 @@ MemTotal: 949448 kB
 Regex: `^(\w+) (\d+) (\w)B$`
 
 Matches:
-| Index | Submatch                |
-|-------|-------------------------|
+| Index | Submatch              |
+|-------|-----------------------|
 | 0     | `MemTotal: 949448 kB` |
-| 1     | `MemTotal`              |
+| 1     | `MemTotal`            |
 | 2     | `949448`              |
-| 3     | `k`                     |
+| 3     | `k`                   |
 
 Metrics:
 | Template | Metric|
@@ -127,13 +130,13 @@ cpu  14574109 23322 24156706 688820875 542455 0 1102485 0 0
 Regex: `^cpu  (\d+) \d+ (\d+) (\d+)`
 
 Matches:
-| Index | Submatch                  |
-|-------|---------------------------|
+| Index | Submatch                                 |
+|-------|------------------------------------------|
 | 0     | `cpu  14574109 23322 24156706 688820875` |
-| 1     | `cpu`                     |
-| 2     | `14574109`                    |
-| 3     | `24156706`                     |
-| 4     | `688820875`                 |
+| 1     | `cpu`                                    |
+| 2     | `14574109`                               |
+| 3     | `24156706`                               |
+| 4     | `688820875`                              |
 
 Metrics:
 | Template | Metric|
@@ -155,12 +158,12 @@ PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
 Regex: `bytes from ([\d.]+): .* time=([\d.]+) (\w+)$`
 
 Matches:
-| Index | Submatch                                               |
-|-------|--------------------------------------------------------|
+| Index | Submatch                                             |
+|-------|------------------------------------------------------|
 | 0     | `bytes from 8.8.8.8: icmp_seq=1 ttl=61 time=2.74 ms` |
-| 1     | `8.8.8.8`                                              |
+| 1     | `8.8.8.8`                                            |
 | 2     | `2.74`                                               |
-| 3     | `ms`                                                   |
+| 3     | `ms`                                                 |
 
 Metrics:
 | Template | Metric|
@@ -210,6 +213,7 @@ The default configuration for a AnyCollect Snap task is the following:
       config:
         /cfm:
           SamplingInterval: 1
+          SendAllMetrics: false
           # MaxMetricsBuffer: 0
           # MaxCollectDuration: 0
       publish:
@@ -219,6 +223,7 @@ The default configuration for a AnyCollect Snap task is the following:
 ### Parameters
 The parameters are (default values are given [above](#configuration)):
  - `SamplingInterval` (type int): delay in seconds between two readings of the kernel values
+ - `SendAllMetrics` (type boolean): whether to send all metrics to Snap, ignoring requested metrics in the task. This is a workaround: if the config file is modified and the Snap daemon not restarted, Snap doesn't update the metric list and new metrics won't be sent
  - `MaxMetricsBuffer` (type int): maximum number of metrics to send to Snap at once
  - `MaxCollectDuration` (type int): maximum waiting time (in seconds) before sending metrics to Snap
 

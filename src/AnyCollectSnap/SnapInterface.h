@@ -42,23 +42,28 @@ namespace AnyCollect {
 			static constexpr std::array appPrefix = {"cfm"sv, "anycollect"sv};
 			static constexpr std::string_view configKeyConfigFile = "ConfigFile"sv;
 			static constexpr std::string_view configKeySamplingInterval = "SamplingInterval"sv;
+			static constexpr std::string_view configKeySendAllMetrics = "SendAllMetrics"sv;
 			static constexpr std::string_view configKeyMaxCollectDuration = "MaxCollectDuration"sv;
 			static constexpr std::string_view configKeyMaxMetricsBuffer = "MaxMetricsBuffer"sv;
-			static constexpr std::array configKeysString = {configKeyConfigFile};
 			static constexpr std::array configKeysInt = {configKeySamplingInterval, configKeyMaxCollectDuration, configKeyMaxMetricsBuffer};
+			static constexpr std::array configKeysBool = {configKeySendAllMetrics};
+			static constexpr bool defaultSendAllMetrics = false;
 			static constexpr std::chrono::seconds defaultMaxCollectDuration = 0s;
 			static constexpr size_t defaultMaxMetricsBuffer = 0;
 			static constexpr std::array<int, configKeysInt.size()> configValuesInt = {AnyCollect::Controller::defaultSamplingInterval.count(), SnapInterface::defaultMaxCollectDuration.count(), SnapInterface::defaultMaxMetricsBuffer};
+			static constexpr std::array<int, configKeysBool.size()> configValuesBool = {SnapInterface::defaultSendAllMetrics};
 			static std::hash<std::string> hasher;
 
 			AnyCollect::Controller controller_;
 			std::map<size_t, Plugin::Metric> metrics_;
 			std::set<size_t> requestedMetrics_;
 			std::set<size_t> unwantedMetrics_;
+			bool sendAllMetrics_;
 			std::vector<Plugin::Metric*> metricsToSend_;
 
 			void insertAppPrefixToNamespace(std::vector<std::string>& ns);
 			void setConfig(const Plugin::Config& cfg);
+			void formatName(std::vector<std::string>& name);
 			size_t computeNameKey(const Metric& m);
 			size_t computeNameKey(const Plugin::Metric& m);
 			Plugin::Metric convertToSnapMetric(const Metric& metric);

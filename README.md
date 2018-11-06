@@ -75,7 +75,7 @@ Other build configured types are `Debug`, `Release`, and `RelWithDebInfo` (to pr
 The `buildall.sh` script can be used to build AnyCollect Snap Plugin library and its dependencies automatically. It can either download the dependencies from GitHub or use local ones in the `third_party` folder.
 
 ### Configuration and Usage
-Refer to [USAGE.md](USAGE.md)
+Refer to [USAGE.md](USAGE.md). **Please be careful about the metric instantiation rules detailed in this usage file.**
 
 
 ## Documentation

@@ -11,6 +11,7 @@
         /cfm:
           # ConfigFile: "/path/to/anycollect/config.json"
           SamplingInterval: 1
+          SendAllMetrics: false
           # MaxMetricsBuffer: 0
           # MaxCollectDuration: 0
       publish:

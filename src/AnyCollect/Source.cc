@@ -135,17 +135,21 @@ namespace AnyCollect {
 
 		switch (this->type_) {
 			case SourceTypeFile:
-				this->readFile(true);
+				if (this->readFile(true) == ((size_t)-1))
+					return false;
 				while (!this->file_.eof()) {
 					this->buffer_.resize(this->buffer_.size() * 2, '\0');
-					this->readFile();
+					if (this->readFile(true) == ((size_t)-1))
+						return false;
 				}
 				break;
 			case SourceTypeCommand:
-				this->executeCommand(true);
+				if (this->executeCommand(true) == ((size_t)-1))
+					return false;
 				while (!this->process_.eof()) {
 					this->buffer_.resize(this->buffer_.size() * 2, '\0');
-					this->executeCommand();
+					if (this->executeCommand(true) == ((size_t)-1))
+						return false;
 				}
 				break;
 		}

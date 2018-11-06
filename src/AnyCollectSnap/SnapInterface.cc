@@ -27,7 +27,8 @@ namespace AnyCollect {
 	std::hash<std::string> SnapInterface::hasher{};
 
 	SnapInterface::SnapInterface() :
-		controller_(*this)
+		controller_(*this),
+		sendAllMetrics_(false)
 	{ }
 
 
@@ -40,19 +41,54 @@ namespace AnyCollect {
 	void SnapInterface::setConfig(const Plugin::Config& cfg) {
 		std::chrono::seconds sampling = Controller::defaultSamplingInterval;
 		std::string configPath;
+		bool sendAll = SnapInterface::defaultSendAllMetrics;
 
 		if (cfg.has_int_key(std::string(SnapInterface::configKeySamplingInterval)))
 			sampling = std::chrono::seconds(cfg.get_int(std::string(SnapInterface::configKeySamplingInterval)));
 		if (cfg.has_string_key(std::string(SnapInterface::configKeyConfigFile)))
 			configPath = cfg.get_string(std::string(SnapInterface::configKeyConfigFile));
+		if (cfg.has_bool_key(std::string(SnapInterface::configKeySendAllMetrics)))
+			sendAll = cfg.get_bool(std::string(SnapInterface::configKeySendAllMetrics));
 
 		this->controller_.setSamplingInterval(sampling);
 		this->controller_.loadConfigFromFile(configPath);
+		this->sendAllMetrics_ = sendAll;
+	}
+
+	void SnapInterface::formatName(std::vector<std::string>& name) {
+		for (auto& part : name) {
+			bool wasCapitalized = false;
+			for (size_t i = 0; i < part.size(); i++) {
+				if (!std::isalnum(part[i]) && part[i] != '_') {
+					if (i > 0 && part[i - 1] != '_') {
+						part[i] = '_';
+					} else {
+						part.erase(i, 1);
+						i--;
+					}
+				}
+				else if (std::isupper(part[i])) {
+					if (i > 0 && part[i - 1] != '_' && std::islower(part[i - 1]) && !wasCapitalized) {
+						part.insert(i, "_");
+						i++;
+					}
+					part[i] = std::tolower(part[i]);
+					wasCapitalized = true;
+				} else
+					wasCapitalized = false;
+			}
+			while (part.back() == '_')
+				part.erase(part.size() - 1, 1);
+			while (part.front() == '_')
+				part.erase(0, 1);
+		}
 	}
 
 	size_t SnapInterface::computeNameKey(const Metric& m) {
 		std::string nameHash;
-		for (const auto& n : m.name())
+		std::vector<std::string> name = m.name();
+		this->formatName(name);
+		for (const auto& n : name)
 			nameHash.append(n);
 		return SnapInterface::hasher(nameHash);
 	}
@@ -66,6 +102,7 @@ namespace AnyCollect {
 
 	Plugin::Metric SnapInterface::convertToSnapMetric(const Metric& metric) {
 		std::vector<std::string> name = metric.name();
+		this->formatName(name);
 		this->insertAppPrefixToNamespace(name);
 		Plugin::Namespace ns{name};
 		Plugin::Metric snapMetric{ns, metric.unit(), ""};
@@ -92,6 +129,11 @@ namespace AnyCollect {
 			ns.emplace_back(SnapInterface::configKeysInt[i]);
 			policy.add_rule(ns, Plugin::IntRule{std::string(SnapInterface::configKeysInt[i]), {SnapInterface::configValuesInt[i], false}});
 		}
+		for (size_t i = 0; i < SnapInterface::configKeysBool.size(); i++) {
+			ns = baseNamespace;
+			ns.emplace_back(SnapInterface::configKeysBool[i]);
+			policy.add_rule(ns, Plugin::BoolRule{std::string(SnapInterface::configKeysBool[i]), {SnapInterface::configValuesBool[i], false}});
+		}
 		return policy;
 	}
 
@@ -105,6 +147,12 @@ namespace AnyCollect {
 			this->metrics_.insert_or_assign(m->key(), this->convertToSnapMetric(*m));
 			metrics.push_back(this->convertToSnapMetric(*m));
 		}
+
+		std::vector<std::string> name = {std::string(SnapInterface::configKeySendAllMetrics)};
+		this->insertAppPrefixToNamespace(name);
+		Plugin::Namespace ns{name};
+		metrics.emplace_back(ns, "", "");
+
 		return metrics;
 	}
 
@@ -115,8 +163,12 @@ namespace AnyCollect {
 		this->setConfig(metsIn.front().get_config());
 
 		this->requestedMetrics_.clear();
-		for (const auto& m : metsIn)
-			this->requestedMetrics_.insert(this->computeNameKey(m));
+		for (const auto& m : metsIn) {
+			if (m.ns().size() == (SnapInterface::appPrefix.size() + 1) && m.ns()[2].get_value() == SnapInterface::configKeySendAllMetrics)
+				this->sendAllMetrics_ = true;
+			else
+				this->requestedMetrics_.insert(this->computeNameKey(m));
+		}
 
 		auto availableMetrics = this->metrics_;
 		this->metrics_.clear();
@@ -146,6 +198,9 @@ namespace AnyCollect {
 				itr->second.set_data(metric->value());
 				itr->second.set_timestamp(metric->timestamp());
 				this->metricsToSend_.push_back(&itr->second);
+			} else if (this->sendAllMetrics_) {
+				auto itr3 = this->metrics_.insert_or_assign(metric->key(), this->convertToSnapMetric(*metric));
+				this->metricsToSend_.push_back(&itr3.first->second);
 			} else {
 				auto itr2 = this->unwantedMetrics_.find(metric->key());
 				if (itr2 == this->unwantedMetrics_.end()) {
