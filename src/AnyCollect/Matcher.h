@@ -36,6 +36,7 @@ using namespace std::literals;
 namespace AnyCollect {
 	class Matcher {
 		public:
+			static constexpr char matchEscapeChar = '\\';
 			static constexpr char matchSubstitutionPrefix = '$';
 			static constexpr std::string_view matchSubstitutionPathPrefix = "path_"sv;
 

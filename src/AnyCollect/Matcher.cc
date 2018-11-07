@@ -101,32 +101,45 @@ namespace AnyCollect {
 
 	inline void replaceMatches(std::string& str, const std::cmatch& match, const std::vector<std::string>& pathParts) {
 		const char* buffer = str.data();
+		bool escaped = false;
 		while (*buffer != '\0') {
-			if (*buffer == '\\') {
-				buffer += 2;
-			}
-			else if (*buffer == Matcher::matchSubstitutionPrefix && isdigit(*(buffer + 1))) {
-				size_t pos = buffer - str.data();
-				buffer++;
-				size_t i = parseUint(buffer);
-				if (i < match.size()) {
-					str.replace(pos, buffer - str.data() - pos, match[i].str());
-					buffer = str.data() + pos + match[i].str().size();
-				} else {
-					str.replace(pos, buffer - str.data() - pos, "");
+			if (escaped) {
+				if (*buffer == Matcher::matchSubstitutionPrefix || *buffer ==  Matcher::matchEscapeChar) {
+					size_t pos = buffer - str.data() - 1;
+					str.erase(pos, 1);
 					buffer = str.data() + pos;
 				}
+				escaped = false;
+				buffer++;
 			}
-			else if (*buffer == Matcher::matchSubstitutionPrefix && Matcher::matchSubstitutionPathPrefix.compare(0, Matcher::matchSubstitutionPathPrefix.size(), buffer + 1, Matcher::matchSubstitutionPathPrefix.size()) == 0) {
+			else if (*buffer == Matcher::matchEscapeChar) {
+				escaped = true;
+				buffer++;
+			}
+			else if (*buffer == Matcher::matchSubstitutionPrefix) {
 				size_t pos = buffer - str.data();
-				buffer += Matcher::matchSubstitutionPathPrefix.size();
-				size_t i = parseUint(buffer);
-				if (i < pathParts.size()) {
-					str.replace(pos, buffer - str.data() - pos, pathParts[i]);
-					buffer = str.data() + pos + pathParts[i].size();
-				} else {
-					str.replace(pos, buffer - str.data() - pos, "");
-					buffer = str.data() + pos;
+				buffer++;
+				bool replace = false;
+				std::string_view replacementString;
+				// Match $123
+				if (isdigit(*buffer)) {
+					replace = true;
+					size_t i = parseUint(buffer);
+					if (i < match.size() && match[i].matched)
+						replacementString = std::string_view{match[i].first, static_cast<size_t>(std::distance(match[i].first, match[i].second))};
+				}
+				// Match $path_123
+				else if (pos + Matcher::matchSubstitutionPathPrefix.size() + 1 < str.size() && strncmp(buffer, Matcher::matchSubstitutionPathPrefix.data(), Matcher::matchSubstitutionPathPrefix.size()) == 0 && isdigit(*(buffer + Matcher::matchSubstitutionPathPrefix.size()))) {
+					replace = true;
+					buffer += Matcher::matchSubstitutionPathPrefix.size();
+					size_t i = parseUint(buffer);
+					if (i < pathParts.size())
+						replacementString = std::string_view{pathParts[i].data()};
+				}
+
+				if (replace) {
+					str.replace(pos, buffer - str.data() - pos, replacementString);
+					buffer = str.data() + pos + replacementString.size();
 				}
 			}
 			else {

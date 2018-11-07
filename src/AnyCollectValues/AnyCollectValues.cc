@@ -41,7 +41,7 @@ void printMetric(const AnyCollect::Metric& m) {
 		name += "/" + m.name()[i];
 	std::string tags;
 	for (const auto& [k, v] : m.tags())
-		tags += "'" + k + "'='" + v + "'";
+		tags += "'" + k + "'='" + v + "', ";
 	std::cout << std::setw(54) << std::left << name;
 	std::cout << std::setw(20) << std::right << std::setprecision(18) << m.value() << " ";
 	std::cout << std::setw(16) << std::left << m.unit();
