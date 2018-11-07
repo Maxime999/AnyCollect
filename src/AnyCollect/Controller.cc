@@ -109,7 +109,7 @@ namespace AnyCollect {
 		if (this->isCollecting_ || this->sources_.empty() || this->expressions_.empty() || this->matchers_.empty())
 			return {};
 
-		this->roundKey_ = this->roundKey_ - 10;
+		this->roundKey_ += 10;
 
 		this->updatedMetrics_.clear();
 		this->updateSources();
@@ -120,7 +120,9 @@ namespace AnyCollect {
 			this->updatedMetrics_.push_back(&itr.second);
 
 		this->roundKey_ += 10;
-		return this->updatedMetrics_;
+		auto availableMetrics = std::move(this->updatedMetrics_);
+		this->updatedMetrics_.clear();
+		return availableMetrics;
 	}
 
 	void Controller::collectMetrics() noexcept {

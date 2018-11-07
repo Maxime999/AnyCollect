@@ -142,11 +142,8 @@ namespace AnyCollect {
 		this->setConfig(cfg);
 
 		auto availableMetrics = this->controller_.availableMetrics();
-		this->metrics_.clear();
-		for (auto& m : availableMetrics) {
-			this->metrics_.insert_or_assign(m->key(), this->convertToSnapMetric(*m));
+		for (auto& m : availableMetrics)
 			metrics.push_back(this->convertToSnapMetric(*m));
-		}
 
 		std::vector<std::string> name = {std::string(SnapInterface::configKeySendAllMetrics)};
 		this->insertAppPrefixToNamespace(name);
@@ -170,20 +167,20 @@ namespace AnyCollect {
 				this->requestedMetrics_.insert(this->computeNameKey(m));
 		}
 
-		auto availableMetrics = this->metrics_;
+		auto availableMetrics = this->controller_.availableMetrics();
 		this->metrics_.clear();
 		this->unwantedMetrics_.clear();
-		for (const auto& [k, v] : availableMetrics) {
-			if (this->requestedMetrics_.count(this->computeNameKey(v)) > 0)
-				this->metrics_.insert_or_assign(k, std::move(v));
+		for (const auto& m : availableMetrics) {
+			if (this->sendAllMetrics_ || this->requestedMetrics_.count(this->computeNameKey(*m)) > 0)
+				this->metrics_.insert_or_assign(m->key(), this->convertToSnapMetric(*m));
 			else
-				this->unwantedMetrics_.insert(k);
+				this->unwantedMetrics_.insert(m->key());
 		}
 	}
 
 
 	void SnapInterface::stream_metrics() {
-		if (this->requestedMetrics_.empty())
+		if (!this->sendAllMetrics_ && this->requestedMetrics_.empty())
 			return;
 
 		this->controller_.collectMetrics();

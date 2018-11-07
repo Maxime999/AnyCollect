@@ -196,6 +196,8 @@ control:
           ConfigFile: /etc/snap/anycollect.json
 ```
 
+However, if you choose to send all metrics described by a configuration file, this global configuration is not needed. You can tell the plugin to send all metrics in the task file, either by setting `SendAllMetrics` to true or by requesting the metric `/cfm/anycollect/*`.
+
 ### Configuration
 First set up the [Snap framework](https://github.com/intelsdi-x/snap/blob/master/README.md#getting-started).
 
@@ -212,6 +214,7 @@ The default configuration for a AnyCollect Snap task is the following:
         /cfm/anycollect/*: {}
       config:
         /cfm:
+          ConfigFile: "/path/to/anycollect/config.json"
           SamplingInterval: 1
           SendAllMetrics: false
           # MaxMetricsBuffer: 0
@@ -222,6 +225,7 @@ The default configuration for a AnyCollect Snap task is the following:
 
 ### Parameters
 The parameters are (default values are given [above](#configuration)):
+ - `ConfigFile` (type string): path to AnyCollect's JSON configuration file
  - `SamplingInterval` (type int): delay in seconds between two readings of the kernel values
  - `SendAllMetrics` (type boolean): whether to send all metrics to Snap, ignoring requested metrics in the task. This is a workaround: if the config file is modified and the Snap daemon not restarted, Snap doesn't update the metric list and new metrics won't be sent
  - `MaxMetricsBuffer` (type int): maximum number of metrics to send to Snap at once
