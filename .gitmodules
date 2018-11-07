@@ -1,3 +1,6 @@
 [submodule "third_party/pstreams"]
 	path = third_party/pstreams
 	url = https://git.code.sf.net/p/pstreams/code
+[submodule "third_party/tinyexpr"]
+	path = third_party/tinyexpr/tinyexpr
+	url = https://github.com/codeplea/tinyexpr

@@ -1,6 +1,6 @@
 #
 # CMakeList.txt
-# AnyCollectValues program cmake file
+# tinyexpr library cmake file
 #
 # Copyright 2018 CFM (www.cfm.fr)
 #
@@ -18,19 +18,12 @@
 #
 
 
-FILE(GLOB AnyCollectValuesSources *.cc)
+add_library(tinyexpr STATIC tinyexpr/tinyexpr.c)
 
-add_executable(AnyCollectValues ${AnyCollectValuesSources})
+target_compile_options(tinyexpr PUBLIC ${GLOBAL_C_COMPILE_OPTIONS})
 
-target_compile_options(AnyCollectValues PUBLIC ${GLOBAL_CXX_COMPILE_OPTIONS})
-include_directories(${CMAKE_SOURCE_DIR}/src)
-target_link_libraries(AnyCollectValues AnyCollect)
+install (TARGETS tinyexpr
+	DESTINATION lib)
 
-
-if(GPERFTOOLS_CPU_PROFILE)
-	find_library(PROFILER_LIB profiler)
-	target_link_libraries(AnyCollectValues ${PROFILER_LIB})
-endif()
-
-install(TARGETS AnyCollectValues
-	DESTINATION bin)
+install(FILES tinyexpr/tinyexpr.h
+	DESTINATION include/tinyexpr)

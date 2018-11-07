@@ -92,7 +92,7 @@ String fields of a metric template (`Name`, `Value`, `Unit` and `Tags`) are subj
 
 **Important notes after substitution**:
  - **A metric is defined by its `Name` and `Tags` fields**: if two metrics have the same `Name` and `Tags`, they are considered to represent the same thing. The `Unit` field is not taken into account. This equivalence is used to compute rates from an iteration to the next, and in case two metrics are found to be equivalent during the same iteration then their values are added.
- - **The `Value` field must be convertible to a number** (either integer or floating point).
+ - **The `Value` field may be a simple mathematic expressions**. Integer or floating point numbers are supported, as well as operands `+`, `-`, `*`, `/`, `%` (modulo), `^` (power), `(` and `)`; some function are also suppoted (`sqrt`, `exp`, `log`, `cos`, `sin`, `tan`, ...). If the expression is not valid, or can't be converted to a number, the metric is dropped.
  - **If any of `Name`, `Value`, or `Tags` field is empty, the metric is considered deficient and is dropped.** The `Unit` field may be empty.
  - **The `Name` field should only contain lower-case alphanumeric characters and underscores `_`.** Upper-case letters will be converted to lower-case, and symbols will be replaced by underscores.
 

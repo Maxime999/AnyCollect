@@ -20,6 +20,8 @@
 
 #include <cmath>
 
+#include <tinyexpr/tinyexpr.h>
+
 #include "Matcher.h"
 
 
@@ -145,14 +147,13 @@ namespace AnyCollect {
 	}
 
 	std::optional<double> Matcher::getValue(const std::cmatch& match, const std::vector<std::string>& pathParts) const noexcept {
-		std::string value = this->value_;
-		replaceMatches(value, match, pathParts);
-		try {
-			return std::make_optional(std::stod(value));
-		}
-		catch(const std::exception& e) {
-			return std::optional<double>{};
-		}
+		std::string expression = this->value_;
+		replaceMatches(expression, match, pathParts);
+		int error = 0;
+		double value = te_interp(expression.c_str(), &error);
+		if (!error)
+			return std::make_optional(value);
+		return std::optional<double>{};
 	}
 
 	std::optional<std::string> Matcher::getUnit(const std::cmatch& match, const std::vector<std::string>& pathParts) const noexcept {
