@@ -4,3 +4,6 @@
 [submodule "third_party/tinyexpr"]
 	path = third_party/tinyexpr/tinyexpr
 	url = https://github.com/codeplea/tinyexpr
+[submodule "third_party/snap-plugin-lib-cpp"]
+	path = third_party/snap-plugin-lib-cpp
+	url = https://github.com/Maxime999/snap-plugin-lib-cpp
