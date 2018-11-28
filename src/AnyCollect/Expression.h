@@ -27,18 +27,41 @@
 
 
 namespace AnyCollect {
+	/**
+	 * @brief Class used to represent an expression (regex)
+	 */
 	class Expression {
 		protected:
-			static std::cmatch match;
-			std::regex regex_;
-			std::vector<std::shared_ptr<Matcher>> matchers_;
+			static std::cmatch match;								//!< Object used to store regex matches
+			std::regex regex_;										//!< Regex object
+			std::vector<std::shared_ptr<Matcher>> matchers_;		//!< Matchers associated with the receiver
 
 		public:
+			/**
+			 * @brief Construct a new Expression object
+			 *
+			 * @param pattern regex string to use
+			 */
 			Expression(const std::string& pattern) noexcept;
 
+			/**
+			 * @brief Returns the array of the receiver's matchers
+			 */
 			std::vector<std::shared_ptr<Matcher>>& matchers() noexcept;
+
+			/**
+			 * @brief Returns the array of the receiver's matchers
+			 */
 			const std::vector<std::shared_ptr<Matcher>>& matchers() const noexcept;
 
+
+			/**
+			 * @brief Apply the regex and find matches in the given string
+			 *
+			 * @param begin iterator to the beginning of the string to match
+			 * @param end iterator to the end of the string to match
+			 * @return the matches found
+			 */
 			const std::cmatch& apply(std::string_view::const_iterator begin, std::string_view::const_iterator end);
 	};
 }

@@ -1,3 +1,5 @@
+# AnyCollect
+
 <!--
 Copyright 2018 CFM (www.cfm.fr)
 
@@ -14,7 +16,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-# AnyCollect
+
 This project aims to collect metrics by reading files or executing commands, and parsing their contents/outputs with regular expressions. It is designed to work with [Snap Telemetry](http://snap-telemetry.io).
 
 This repo is organized as the following:

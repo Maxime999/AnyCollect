@@ -29,6 +29,9 @@ using namespace std::literals;
 
 
 namespace AnyCollect {
+	/**
+	 * @brief Struct used to represent the JSON configuration file
+	 */
 	struct Config {
 		struct expression {
 			struct metric {
@@ -92,11 +95,34 @@ namespace AnyCollect {
 		std::vector<Config::file> files;
 		std::vector<Config::command> commands;
 
+		/**
+		 * @brief Parses the specified config file into a Config object
+		 *
+		 * @param path path of the config file to parse
+		 */
 		Config(const std::string& path) noexcept;
     };
 
+
+	/**
+	 * @brief Converts a json object into a Config object
+	 *
+	 * @param j json object to parse
+	 * @param c Config object to put json values into
+	 */
 	void from_json(const nlohmann::json& j, Config& c) noexcept;
 
+	/**
+	 * @brief Parse a JSON value of specified type from a JSON dictionary
+	 *
+	 * If the key is not in the JSON dictionary, the program's execution is aborted with an error.
+	 *
+	 * @tparam T Expected type of JSON object
+	 * @tparam K Type of key
+	 * @param j JSON dictionary
+	 * @param key key of the JSON object to get
+	 * @return the extracted value with specified key and type
+	 */
 	template<typename T, typename K>
 	T getValue(const nlohmann::json& j, const K& key) noexcept {
 		try {

@@ -1,3 +1,5 @@
+# Build dependencies
+
 <!--
 Copyright 2018 CFM (www.cfm.fr)
 
@@ -14,7 +16,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-# Build dependencies
 
 *Instructions for AnyCollect 1.0.0*
 
