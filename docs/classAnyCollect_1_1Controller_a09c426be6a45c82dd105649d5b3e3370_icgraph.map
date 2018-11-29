@@ -1,0 +1,4 @@
+<map id="AnyCollect::Controller::availableMetrics" name="AnyCollect::Controller::availableMetrics">
+<area shape="rect" id="node2" href="$classAnyCollect_1_1SnapInterface.html#a3e930e4681cdd5405177b58e78a7e860" title="Returns all metrics that can be fetched by the plugin to Snap. " alt="" coords="201,5,373,47"/>
+<area shape="rect" id="node3" href="$classAnyCollect_1_1SnapInterface.html#afd69bf58bdbebfbd493d018766ecf327" title="Gets the user&#39;s requested metrics from Snap. " alt="" coords="201,71,373,112"/>
+</map>

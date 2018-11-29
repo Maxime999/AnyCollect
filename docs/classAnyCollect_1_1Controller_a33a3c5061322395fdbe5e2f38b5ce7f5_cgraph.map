@@ -1,0 +1,12 @@
+<map id="AnyCollect::Controller::collectMetrics" name="AnyCollect::Controller::collectMetrics">
+<area shape="rect" id="node2" href="$classAnyCollect_1_1Controller.html#ae25d964f8fe167ef2f422e65f8f41acb" title="Updates sources (fetches file contents and executes commands) " alt="" coords="251,71,399,112"/>
+<area shape="rect" id="node3" href="$classAnyCollect_1_1Controller.html#a59daceb9bd47fda1d8111926c23f3e96" title="For each line of each source, executes the source&#39;s expressions to find matches. " alt="" coords="251,136,399,177"/>
+<area shape="rect" id="node10" href="$classAnyCollect_1_1ControllerDelegate.html#a1db38c0019adfc7144a622eb652aa492" title="Function called every time the Controller has collected metrics. " alt="" coords="225,201,424,243"/>
+<area shape="rect" id="node11" href="$classAnyCollect_1_1ControllerDelegate.html#aa7cd72b054b469f1fd701db0e9783951" title="Function called after each iteration to ask the delegate whether the controller should stop collectin..." alt="" coords="201,267,448,308"/>
+<area shape="rect" id="node4" href="$classAnyCollect_1_1Controller.html#a95df1840161d1bf82340ac22328cf76d" title="Updates metrics from a match. " alt="" coords="496,136,644,177"/>
+<area shape="rect" id="node5" href="$classAnyCollect_1_1Metric.html#a7c2c91e3160626d543afec187f4e1793" title="Returns the key of the collection iteration which created the metric. " alt="" coords="692,5,821,47"/>
+<area shape="rect" id="node6" href="$classAnyCollect_1_1Metric.html#a79fb339ff73f37445781c7413c785f4a" title="Sets a new value to the metric. " alt="" coords="692,71,821,112"/>
+<area shape="rect" id="node7" href="$classAnyCollect_1_1Metric.html#a1dc1f246867246c710416855e3d0f472" title="Adds a new value to the current value. " alt="" coords="692,136,821,177"/>
+<area shape="rect" id="node8" href="$classAnyCollect_1_1Metric.html#acc6d86e25d554bc5c4f415746a38ef2a" title="Sets the timestamp of the metric. " alt="" coords="692,201,821,243"/>
+<area shape="rect" id="node9" href="$classAnyCollect_1_1Metric.html#aa51806dab2b3fb9a5deb5157d6b9060a" title="Sets the round key of the metric. " alt="" coords="692,267,821,308"/>
+</map>

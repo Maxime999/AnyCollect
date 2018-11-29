@@ -1,0 +1,10 @@
+<map id="AnyCollect::SnapInterface::contollerCollectedMetrics" name="AnyCollect::SnapInterface::contollerCollectedMetrics">
+<area shape="rect" id="node2" href="$classAnyCollect_1_1SnapInterface.html#a3faf7fc46388048366fa2c271ee874b4" title="Converts a metric object into a Snap metric object. " alt="" coords="229,201,401,243"/>
+<area shape="rect" id="node3" href="$classAnyCollect_1_1Metric.html#ae3585b71a896dae84ad73a6b6f5fc2bd" title="Returns the name of the metric. " alt="" coords="485,5,615,47"/>
+<area shape="rect" id="node4" href="$classAnyCollect_1_1SnapInterface.html#a2386a06068560303a62f3f8450dd8448" title="Formats a metric name to be compatible with Snap requirements. " alt="" coords="464,71,636,112"/>
+<area shape="rect" id="node5" href="$classAnyCollect_1_1SnapInterface.html#ac51e201c6c67dfccc87141cfc68788b3" title="Inserts plugin name prefix into Snap namespace. " alt="" coords="449,136,651,177"/>
+<area shape="rect" id="node6" href="$classAnyCollect_1_1Metric.html#a938687184b4e7a69ce20e89c293f8a36" title="Returns the unit of the metric. " alt="" coords="485,201,615,243"/>
+<area shape="rect" id="node7" href="$classAnyCollect_1_1Metric.html#afa8c6f87e1f88e78ef13f48decf1ee9a" title="Returns the tags of the metric. " alt="" coords="485,267,615,308"/>
+<area shape="rect" id="node8" href="$classAnyCollect_1_1Metric.html#a0f1633986410c3e276d6608f8abbee14" title="Returns the value of the metric. " alt="" coords="485,332,615,373"/>
+<area shape="rect" id="node9" href="$classAnyCollect_1_1Metric.html#a6d3fba906b48e41f4345e1c00d32f16e" title="Returns the timestamp of the metric. " alt="" coords="485,397,615,439"/>
+</map>

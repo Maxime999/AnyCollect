@@ -1,0 +1,6 @@
+<map id="AnyCollect::Controller" name="AnyCollect::Controller">
+<area shape="rect" id="node3" href="$classAnyCollect_1_1Metric.html" title="Class used to represent a metric object (with a name, unit, tags, a value and a timestamp) ..." alt="" coords="623,46,752,73"/>
+<area shape="rect" id="node5" title="STL class. " alt="" coords="181,46,261,73"/>
+<area shape="rect" id="node6" title="STL class. " alt="" coords="5,39,132,80"/>
+<area shape="rect" id="node12" href="$classAnyCollect_1_1ControllerDelegate.html" title="Abstract delegate of Controller. " alt="" coords="866,333,1065,359"/>
+</map>

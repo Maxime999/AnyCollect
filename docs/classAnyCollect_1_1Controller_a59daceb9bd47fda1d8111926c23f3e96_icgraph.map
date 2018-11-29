@@ -1,0 +1,8 @@
+<map id="AnyCollect::Controller::computeMatches" name="AnyCollect::Controller::computeMatches">
+<area shape="rect" id="node2" href="$classAnyCollect_1_1Controller.html#a09c426be6a45c82dd105649d5b3e3370" title="Returns the array of all currently matching metrics on the system, without their values. " alt="" coords="201,71,349,112"/>
+<area shape="rect" id="node5" href="$classAnyCollect_1_1Controller.html#a33a3c5061322395fdbe5e2f38b5ce7f5" title="Launch metric collection loop. " alt="" coords="201,136,349,177"/>
+<area shape="rect" id="node3" href="$classAnyCollect_1_1SnapInterface.html#a3e930e4681cdd5405177b58e78a7e860" title="Returns all metrics that can be fetched by the plugin to Snap. " alt="" coords="397,5,569,47"/>
+<area shape="rect" id="node4" href="$classAnyCollect_1_1SnapInterface.html#afd69bf58bdbebfbd493d018766ecf327" title="Gets the user&#39;s requested metrics from Snap. " alt="" coords="397,71,569,112"/>
+<area shape="rect" id="node6" href="$classAnyCollect_1_1SnapInterface.html#ad65eb0086204065da240261765715ec7" title="Stream metrics to Snap. " alt="" coords="397,136,569,177"/>
+<area shape="rect" id="node7" href="$AnyCollectValues_8cc.html#a0ddf1224851353fc92bfbff6f499fa97" title="AnyCollect&#39;s main function. " alt="" coords="458,202,509,229"/>
+</map>

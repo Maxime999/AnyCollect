@@ -1,0 +1,4 @@
+<map id="AnyCollect::Source::reset" name="AnyCollect::Source::reset">
+<area shape="rect" id="node2" href="$classAnyCollect_1_1Source.html#a66c0fc0bc1a70d3faed15137d488441f" title="Updates the source (read the file or execute command) and store the results. " alt="" coords="188,5,323,47"/>
+<area shape="rect" id="node3" href="$structAnyCollect_1_1Config.html#af3d263af3e5e3d27be36c94687f1481d" title="Parses the specified config file into a Config object. " alt="" coords="371,5,500,47"/>
+</map>

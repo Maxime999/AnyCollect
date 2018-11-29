@@ -1,0 +1,7 @@
+<map id="AnyCollect::Controller::parseData" name="AnyCollect::Controller::parseData">
+<area shape="rect" id="node2" href="$classAnyCollect_1_1Metric.html#a7c2c91e3160626d543afec187f4e1793" title="Returns the key of the collection iteration which created the metric. " alt="" coords="201,5,331,47"/>
+<area shape="rect" id="node3" href="$classAnyCollect_1_1Metric.html#a79fb339ff73f37445781c7413c785f4a" title="Sets a new value to the metric. " alt="" coords="201,71,331,112"/>
+<area shape="rect" id="node4" href="$classAnyCollect_1_1Metric.html#a1dc1f246867246c710416855e3d0f472" title="Adds a new value to the current value. " alt="" coords="201,136,331,177"/>
+<area shape="rect" id="node5" href="$classAnyCollect_1_1Metric.html#acc6d86e25d554bc5c4f415746a38ef2a" title="Sets the timestamp of the metric. " alt="" coords="201,201,331,243"/>
+<area shape="rect" id="node6" href="$classAnyCollect_1_1Metric.html#aa51806dab2b3fb9a5deb5157d6b9060a" title="Sets the round key of the metric. " alt="" coords="201,267,331,308"/>
+</map>

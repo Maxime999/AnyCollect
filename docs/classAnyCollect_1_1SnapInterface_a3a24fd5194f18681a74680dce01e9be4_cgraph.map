@@ -1,0 +1,4 @@
+<map id="AnyCollect::SnapInterface::computeNameKey" name="AnyCollect::SnapInterface::computeNameKey">
+<area shape="rect" id="node2" href="$classAnyCollect_1_1Metric.html#ae3585b71a896dae84ad73a6b6f5fc2bd" title="Returns the name of the metric. " alt="" coords="247,5,376,47"/>
+<area shape="rect" id="node3" href="$classAnyCollect_1_1SnapInterface.html#a2386a06068560303a62f3f8450dd8448" title="Formats a metric name to be compatible with Snap requirements. " alt="" coords="225,71,397,112"/>
+</map>

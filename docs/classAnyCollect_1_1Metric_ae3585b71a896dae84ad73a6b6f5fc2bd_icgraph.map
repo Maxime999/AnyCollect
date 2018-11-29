@@ -1,0 +1,10 @@
+<map id="AnyCollect::Metric::name" name="AnyCollect::Metric::name">
+<area shape="rect" id="node2" href="$classAnyCollect_1_1Metric.html#a2f99eb756f4d801f79220188cc4ba38a" title="Compute the key of potential metric. " alt="" coords="204,5,333,47"/>
+<area shape="rect" id="node4" href="$classAnyCollect_1_1SnapInterface.html#a3a24fd5194f18681a74680dce01e9be4" title="Computes a key based solely on a metric&#39;s name. " alt="" coords="183,71,355,112"/>
+<area shape="rect" id="node6" href="$classAnyCollect_1_1SnapInterface.html#a3faf7fc46388048366fa2c271ee874b4" title="Converts a metric object into a Snap metric object. " alt="" coords="183,136,355,177"/>
+<area shape="rect" id="node9" href="$AnyCollectValues_8cc.html#aa6119ccce0e482dd3fd248ef61ed1473" title="printMetric" alt="" coords="227,202,310,229"/>
+<area shape="rect" id="node3" href="$classAnyCollect_1_1Metric.html#ace645ceb5be3cb02adde0a2150ae52a8" title="Construct a new Metric object. " alt="" coords="426,5,555,47"/>
+<area shape="rect" id="node5" href="$classAnyCollect_1_1SnapInterface.html#afd69bf58bdbebfbd493d018766ecf327" title="Gets the user&#39;s requested metrics from Snap. " alt="" coords="405,71,577,112"/>
+<area shape="rect" id="node7" href="$classAnyCollect_1_1SnapInterface.html#a3e930e4681cdd5405177b58e78a7e860" title="Returns all metrics that can be fetched by the plugin to Snap. " alt="" coords="405,136,577,177"/>
+<area shape="rect" id="node8" href="$classAnyCollect_1_1SnapInterface.html#ae24ee3231aa20cfa954ee85175ca049e" title="Function called every time the Controller has collected metrics. " alt="" coords="403,201,579,243"/>
+</map>

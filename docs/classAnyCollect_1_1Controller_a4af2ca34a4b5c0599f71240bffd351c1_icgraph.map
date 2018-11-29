@@ -1,0 +1,6 @@
+<map id="AnyCollect::Controller::setSamplingInterval" name="AnyCollect::Controller::setSamplingInterval">
+<area shape="rect" id="node2" href="$classAnyCollect_1_1SnapInterface.html#a379b18286b601ad3c68519b51dfb4f6d" title="Configures the plugin and the controller accordingly, unspecified values are reset to default..." alt="" coords="201,39,373,80"/>
+<area shape="rect" id="node5" href="$AnyCollectValues_8cc.html#a0ddf1224851353fc92bfbff6f499fa97" title="AnyCollect&#39;s main function. " alt="" coords="262,105,313,131"/>
+<area shape="rect" id="node3" href="$classAnyCollect_1_1SnapInterface.html#a3e930e4681cdd5405177b58e78a7e860" title="Returns all metrics that can be fetched by the plugin to Snap. " alt="" coords="421,5,593,47"/>
+<area shape="rect" id="node4" href="$classAnyCollect_1_1SnapInterface.html#afd69bf58bdbebfbd493d018766ecf327" title="Gets the user&#39;s requested metrics from Snap. " alt="" coords="421,71,593,112"/>
+</map>

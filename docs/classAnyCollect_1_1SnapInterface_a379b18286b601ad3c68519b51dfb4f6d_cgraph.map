@@ -1,0 +1,5 @@
+<map id="AnyCollect::SnapInterface::setConfig" name="AnyCollect::SnapInterface::setConfig">
+<area shape="rect" id="node2" href="$classAnyCollect_1_1Controller.html#a4af2ca34a4b5c0599f71240bffd351c1" title="Sets the metrics sampling interval. " alt="" coords="225,5,373,47"/>
+<area shape="rect" id="node3" href="$classAnyCollect_1_1Controller.html#a8b41ee971de9d071a09e4fc3294b7715" title="Configures sources, expressions and matchers according to config file. " alt="" coords="225,71,373,112"/>
+<area shape="rect" id="node4" href="$classAnyCollect_1_1Source.html#af3f0bd36dbbbd6e02db9a45c5a364078" title="Returns all file paths that match a pattern as defined by POSIX. " alt="" coords="421,63,605,119"/>
+</map>

@@ -1,0 +1,23 @@
+<map id="AnyCollect::SnapInterface::get_metric_types" name="AnyCollect::SnapInterface::get_metric_types">
+<area shape="rect" id="node2" href="$classAnyCollect_1_1SnapInterface.html#a379b18286b601ad3c68519b51dfb4f6d" title="Configures the plugin and the controller accordingly, unspecified values are reset to default..." alt="" coords="225,71,397,112"/>
+<area shape="rect" id="node6" href="$classAnyCollect_1_1Controller.html#a09c426be6a45c82dd105649d5b3e3370" title="Returns the array of all currently matching metrics on the system, without their values. " alt="" coords="237,201,385,243"/>
+<area shape="rect" id="node15" href="$classAnyCollect_1_1SnapInterface.html#a3faf7fc46388048366fa2c271ee874b4" title="Converts a metric object into a Snap metric object. " alt="" coords="225,429,397,471"/>
+<area shape="rect" id="node18" href="$classAnyCollect_1_1SnapInterface.html#ac51e201c6c67dfccc87141cfc68788b3" title="Inserts plugin name prefix into Snap namespace. " alt="" coords="445,267,647,308"/>
+<area shape="rect" id="node3" href="$classAnyCollect_1_1Controller.html#a4af2ca34a4b5c0599f71240bffd351c1" title="Sets the metrics sampling interval. " alt="" coords="472,5,620,47"/>
+<area shape="rect" id="node4" href="$classAnyCollect_1_1Controller.html#a8b41ee971de9d071a09e4fc3294b7715" title="Configures sources, expressions and matchers according to config file. " alt="" coords="472,71,620,112"/>
+<area shape="rect" id="node5" href="$classAnyCollect_1_1Source.html#af3f0bd36dbbbd6e02db9a45c5a364078" title="Returns all file paths that match a pattern as defined by POSIX. " alt="" coords="695,63,879,119"/>
+<area shape="rect" id="node7" href="$classAnyCollect_1_1Controller.html#ae25d964f8fe167ef2f422e65f8f41acb" title="Updates sources (fetches file contents and executes commands) " alt="" coords="472,136,620,177"/>
+<area shape="rect" id="node8" href="$classAnyCollect_1_1Controller.html#a59daceb9bd47fda1d8111926c23f3e96" title="For each line of each source, executes the source&#39;s expressions to find matches. " alt="" coords="472,201,620,243"/>
+<area shape="rect" id="node9" href="$classAnyCollect_1_1Controller.html#a95df1840161d1bf82340ac22328cf76d" title="Updates metrics from a match. " alt="" coords="713,201,861,243"/>
+<area shape="rect" id="node10" href="$classAnyCollect_1_1Metric.html#a7c2c91e3160626d543afec187f4e1793" title="Returns the key of the collection iteration which created the metric. " alt="" coords="927,71,1056,112"/>
+<area shape="rect" id="node11" href="$classAnyCollect_1_1Metric.html#a79fb339ff73f37445781c7413c785f4a" title="Sets a new value to the metric. " alt="" coords="927,136,1056,177"/>
+<area shape="rect" id="node12" href="$classAnyCollect_1_1Metric.html#a1dc1f246867246c710416855e3d0f472" title="Adds a new value to the current value. " alt="" coords="927,201,1056,243"/>
+<area shape="rect" id="node13" href="$classAnyCollect_1_1Metric.html#acc6d86e25d554bc5c4f415746a38ef2a" title="Sets the timestamp of the metric. " alt="" coords="927,267,1056,308"/>
+<area shape="rect" id="node14" href="$classAnyCollect_1_1Metric.html#aa51806dab2b3fb9a5deb5157d6b9060a" title="Sets the round key of the metric. " alt="" coords="927,332,1056,373"/>
+<area shape="rect" id="node16" href="$classAnyCollect_1_1Metric.html#ae3585b71a896dae84ad73a6b6f5fc2bd" title="Returns the name of the metric. " alt="" coords="481,332,611,373"/>
+<area shape="rect" id="node17" href="$classAnyCollect_1_1SnapInterface.html#a2386a06068560303a62f3f8450dd8448" title="Formats a metric name to be compatible with Snap requirements. " alt="" coords="460,397,632,439"/>
+<area shape="rect" id="node19" href="$classAnyCollect_1_1Metric.html#a938687184b4e7a69ce20e89c293f8a36" title="Returns the unit of the metric. " alt="" coords="481,463,611,504"/>
+<area shape="rect" id="node20" href="$classAnyCollect_1_1Metric.html#afa8c6f87e1f88e78ef13f48decf1ee9a" title="Returns the tags of the metric. " alt="" coords="481,528,611,569"/>
+<area shape="rect" id="node21" href="$classAnyCollect_1_1Metric.html#a0f1633986410c3e276d6608f8abbee14" title="Returns the value of the metric. " alt="" coords="481,593,611,635"/>
+<area shape="rect" id="node22" href="$classAnyCollect_1_1Metric.html#a6d3fba906b48e41f4345e1c00d32f16e" title="Returns the timestamp of the metric. " alt="" coords="481,659,611,700"/>
+</map>

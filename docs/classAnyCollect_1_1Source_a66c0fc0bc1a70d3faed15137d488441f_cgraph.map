@@ -1,0 +1,5 @@
+<map id="AnyCollect::Source::update" name="AnyCollect::Source::update">
+<area shape="rect" id="node2" href="$classAnyCollect_1_1Source.html#a41a19e33c9fa04c104345c313a081aca" title="For file sources, put the file contents into the buffer_. " alt="" coords="371,5,505,47"/>
+<area shape="rect" id="node3" href="$classAnyCollect_1_1Source.html#af2b43c4f1c3e3b4592156bf2f98702a5" title="For command sources, put the command output into the buffer_. " alt="" coords="371,84,505,125"/>
+<area shape="rect" id="node4" href="$classAnyCollect_1_1Source.html#a8e78f3d5602521cc7a7f824370067acd" title="Resets the source: attempts to open the file or execute the command, allocates enough space for conte..." alt="" coords="188,51,323,92"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="AnyCollect::parseUint" name="AnyCollect::parseUint">
+<area shape="rect" id="node2" href="$namespaceAnyCollect.html#af06b7e668e50a0626d07a56bc0238da6" title="AnyCollect::replaceMatches" alt="" coords="201,111,387,138"/>
+<area shape="rect" id="node3" href="$classAnyCollect_1_1Matcher.html#af23bc3b0e3af338df52b1765af9a26c4" title="Use an expression match to compute the metric&#39;s name. " alt="" coords="435,5,575,47"/>
+<area shape="rect" id="node4" href="$classAnyCollect_1_1Matcher.html#adeee49af02729c07bfdabe889edd171a" title="Use an expression match to compute the metric&#39;s value. " alt="" coords="435,71,575,112"/>
+<area shape="rect" id="node5" href="$classAnyCollect_1_1Matcher.html#a799b00914a53987f7c41b1003152954d" title="Use an expression match to compute the metric&#39;s unit. " alt="" coords="435,136,575,177"/>
+<area shape="rect" id="node6" href="$classAnyCollect_1_1Matcher.html#acc573d6a6bdf42cf802464a60530de7e" title="Use an expression match to compute the metric&#39;s tags. " alt="" coords="435,201,575,243"/>
+</map>

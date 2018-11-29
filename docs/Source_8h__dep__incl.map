@@ -1,0 +1,9 @@
+<map id="AnyCollect/Source.h" name="AnyCollect/Source.h">
+<area shape="rect" id="node2" href="$Config_8cc.html" title="AnyCollect/Config.cc" alt="" coords="53,80,195,107"/>
+<area shape="rect" id="node3" href="$Controller_8h.html" title="AnyCollect/Controller.h" alt="" coords="220,80,375,107"/>
+<area shape="rect" id="node8" href="$Source_8cc.html" title="AnyCollect/Source.cc" alt="" coords="399,80,547,107"/>
+<area shape="rect" id="node4" href="$Controller_8cc.html" title="AnyCollect/Controller.cc" alt="" coords="5,162,168,189"/>
+<area shape="rect" id="node5" href="$SnapInterface_8h.html" title="AnyCollectSnap/SnapInterface.h" alt="" coords="193,162,402,189"/>
+<area shape="rect" id="node7" href="$AnyCollectValues_8cc.html" title="AnyCollectValues/AnyCollect\lValues.cc" alt="" coords="427,155,619,196"/>
+<area shape="rect" id="node6" href="$SnapInterface_8cc.html" title="AnyCollectSnap/SnapInterface.cc" alt="" coords="189,244,405,271"/>
+</map>

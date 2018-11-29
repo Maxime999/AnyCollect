@@ -1,0 +1,7 @@
+<map id="AnyCollect::Source::filePathsMatchingGlobbingPattern" name="AnyCollect::Source::filePathsMatchingGlobbingPattern">
+<area shape="rect" id="node2" href="$classAnyCollect_1_1Controller.html#a8b41ee971de9d071a09e4fc3294b7715" title="Configures sources, expressions and matchers according to config file. " alt="" coords="237,68,385,109"/>
+<area shape="rect" id="node3" href="$classAnyCollect_1_1SnapInterface.html#a379b18286b601ad3c68519b51dfb4f6d" title="Configures the plugin and the controller accordingly, unspecified values are reset to default..." alt="" coords="433,39,605,80"/>
+<area shape="rect" id="node6" href="$AnyCollectValues_8cc.html#a0ddf1224851353fc92bfbff6f499fa97" title="AnyCollect&#39;s main function. " alt="" coords="494,105,545,131"/>
+<area shape="rect" id="node4" href="$classAnyCollect_1_1SnapInterface.html#a3e930e4681cdd5405177b58e78a7e860" title="Returns all metrics that can be fetched by the plugin to Snap. " alt="" coords="653,5,825,47"/>
+<area shape="rect" id="node5" href="$classAnyCollect_1_1SnapInterface.html#afd69bf58bdbebfbd493d018766ecf327" title="Gets the user&#39;s requested metrics from Snap. " alt="" coords="653,71,825,112"/>
+</map>

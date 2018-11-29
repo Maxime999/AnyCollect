@@ -1,0 +1,5 @@
+<map id="AnyCollect::SnapInterface::convertToSnapMetric" name="AnyCollect::SnapInterface::convertToSnapMetric">
+<area shape="rect" id="node2" href="$classAnyCollect_1_1SnapInterface.html#a3e930e4681cdd5405177b58e78a7e860" title="Returns all metrics that can be fetched by the plugin to Snap. " alt="" coords="227,5,399,47"/>
+<area shape="rect" id="node3" href="$classAnyCollect_1_1SnapInterface.html#afd69bf58bdbebfbd493d018766ecf327" title="Gets the user&#39;s requested metrics from Snap. " alt="" coords="227,71,399,112"/>
+<area shape="rect" id="node4" href="$classAnyCollect_1_1SnapInterface.html#ae24ee3231aa20cfa954ee85175ca049e" title="Function called every time the Controller has collected metrics. " alt="" coords="225,136,401,177"/>
+</map>

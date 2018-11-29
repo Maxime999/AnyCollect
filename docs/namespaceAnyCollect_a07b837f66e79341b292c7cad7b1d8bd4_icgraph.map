@@ -1,0 +1,4 @@
+<map id="AnyCollect::from_json" name="AnyCollect::from_json">
+<area shape="rect" id="node2" href="$structAnyCollect_1_1Config.html#af3d263af3e5e3d27be36c94687f1481d" title="Parses the specified config file into a Config object. " alt="" coords="213,5,342,47"/>
+<area shape="rect" id="node3" href="$namespaceAnyCollect.html#a57178465936b36262131f53c2e3b8797" title="Converts a json object into a Config object. " alt="" coords="203,71,352,98"/>
+</map>

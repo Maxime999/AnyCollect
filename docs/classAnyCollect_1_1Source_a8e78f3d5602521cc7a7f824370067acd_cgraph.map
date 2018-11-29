@@ -1,0 +1,4 @@
+<map id="AnyCollect::Source::reset" name="AnyCollect::Source::reset">
+<area shape="rect" id="node2" href="$classAnyCollect_1_1Source.html#a41a19e33c9fa04c104345c313a081aca" title="For file sources, put the file contents into the buffer_. " alt="" coords="188,5,323,47"/>
+<area shape="rect" id="node3" href="$classAnyCollect_1_1Source.html#af2b43c4f1c3e3b4592156bf2f98702a5" title="For command sources, put the command output into the buffer_. " alt="" coords="188,71,323,112"/>
+</map>
