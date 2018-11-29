@@ -63,12 +63,12 @@ target_link_libraries(AnyCollectSnap ${SNAP_LIB})
 target_link_libraries(AnyCollectSnap ${PROTOBUF_LIB} ${GRPCPP_LIB} ${GRPC_LIB})
 target_link_libraries(AnyCollectSnap ${CPPNETLIB_URI_LIB} ${CPPNETLIB_CLIENT_LIB} ${CPPNETLIB_SERVER_LIB})
 target_link_libraries(AnyCollectSnap ${BOOST_PROGRAM_OPTIONS_LIB} ${BOOST_SYSTEM_LIB} ${BOOST_FILESYSTEM_LIB})
-target_link_libraries(AnyCollectSnap rt z pthread)
+target_link_libraries(AnyCollectSnap rt z pthread ssl crypto)
 
 # target_link_libraries(AnyCollectSnap snap grpc grpc++ protobuf
 #     cppnetlib-uri cppnetlib-client-connections cppnetlib-server-parsers
 #     boost_program_options boost_system boost_filesystem
-#     z pthread )
+#     z pthread ssl crypto)
 
 install(TARGETS AnyCollectSnap
 	DESTINATION bin)

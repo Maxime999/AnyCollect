@@ -52,7 +52,7 @@ All OSs currently supported by plugin:
 ### System Requirements
 A C++ 17 compiler such as GCC 7 is required.
 
-The libraries and standalone interfaces do not have additional dependencies. The Snap plugin interface requires the [C++ Snap plugin library](https://github.com/Maxime999/snap-plugin-lib-cpp) and its dependencies, which should be installed on the system first. AnyCollect uses static liniking of those libraries for the executables to be portable.
+The libraries and standalone interfaces do not have additional dependencies. The Snap plugin interface requires the [C++ Snap plugin library](https://github.com/Maxime999/snap-plugin-lib-cpp) and its dependencies, which should be installed on the system first. AnyCollect uses static linking of those libraries for the programs to be portable.
 
 Refer to the DEPENDENCIES.md file for more information.
 
