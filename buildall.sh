@@ -29,6 +29,7 @@ CPPNETLIB_VERSION_TAG="cpp-netlib-0.13.0-final"
 CPPNETLIB_VERSION_BRANCH="0.13-release"
 SPDLOG_VERSION_TAG="v1.1.0"
 NLOHMANN_JSON_VERSION_TAG="v3.3.0"
+SNAPLIB_VERSION_COMMIT="7b8d9f62035d1e9cecea98feab18928ddea60408"
 
 
 #####################
@@ -38,15 +39,12 @@ NLOHMANN_JSON_VERSION_TAG="v3.3.0"
 INTERACTIVE=0	# 0 is true
 USE_LOCAL=1		# 1 is false
 DEPS_PATH="$(pwd)/third_party"
-DEPS_OUTPUT_PATH="$DEPS_PATH/build"
 OUTPUT="$(pwd)/output"
 CLEANUP=1
 
 CURRENT_DIR=$(readlink -e $(dirname "$0"))
 NCPU=$(lscpu -p | egrep -v '^#' | sort -u -t, -k 2,4 | wc -l)
 MAKE_ARGS="-j$NCPU"
-DEPS_OUTPUT_PATH_REL=../$(perl -e 'use File::Spec; print File::Spec->abs2rel(@ARGV) . "\n"' $DEPS_OUTPUT_PATH $DEPS_PATH)
-DEPS_RETURN_PATH=$(perl -e 'use File::Spec; print File::Spec->abs2rel(@ARGV) . "\n"' $(pwd) $DEPS_PATH)
 
 
 N="\e[0m" # Reset normal formatting
@@ -127,6 +125,10 @@ while [[ $# > 0 ]]; do
 	shift
 done
 
+DEPS_OUTPUT_PATH="$DEPS_PATH/build"
+DEPS_OUTPUT_PATH_REL=../$(perl -e 'use File::Spec; print File::Spec->abs2rel(@ARGV) . "\n"' $DEPS_OUTPUT_PATH $DEPS_PATH)
+DEPS_RETURN_PATH=$(perl -e 'use File::Spec; print File::Spec->abs2rel(@ARGV) . "\n"' $(pwd) $DEPS_PATH)
+
 
 if $(exit $INTERACTIVE); then
 	echo -e "${B}Snap C++ library and AnyCollect builder$N"
@@ -142,7 +144,7 @@ if $(exit $INTERACTIVE); then
 	echo "   - pkg-config"
 	echo "   - libtool"
 	echo "   - cmake"
-	echo "   - a C++17 compiler (such as GCC 7.2 from the Red Hat Developer Toolset 7)"
+	echo "   - a C++17 compiler (such as GCC 7 or later)"
 	echo "   - optionally doxygen (for documentation)"
 	if ! confirm "Is everything set-up correctly?" y; then
 		echo "Please install these dependencies first."
@@ -151,8 +153,9 @@ if $(exit $INTERACTIVE); then
 	echo
 fi
 
-source /opt/rh/devtoolset-7/enable
-
+if [ -f /opt/rh/devtoolset-7/enable ]; then
+	source /opt/rh/devtoolset-7/enable
+fi
 
 ###########################################
 ### Build and install Snap dependencies ###
@@ -190,6 +193,11 @@ if ! $(exit $USE_LOCAL); then
 	cd ..
 
 	wget --no-check-certificate -O json.hpp https://github.com/nlohmann/json/releases/download/$NLOHMANN_JSON_VERSION_TAG/json.hpp
+
+	git clone https://github.com/Maxime999/snap-plugin-lib-cpp
+	cd snap-plugin-lib-cpp
+	git checkout $SNAPLIB_VERSION_COMMIT
+	cd ..
 fi
 
 
