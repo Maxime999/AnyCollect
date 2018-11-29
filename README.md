@@ -1,5 +1,7 @@
 # AnyCollect
 
+[![Build Status](https://travis-ci.org/Maxime999/AnyCollect.svg?branch=master)](https://travis-ci.org/Maxime999/AnyCollect)
+
 <!--
 Copyright 2018 CFM (www.cfm.fr)
 
@@ -27,6 +29,8 @@ This repo is organized as the following:
 The Snap plugins require a special version of the [C++ Snap plugin library](https://github.com/Maxime999/snap-plugin-lib-cpp).
 
 Refer to [USAGE.md](USAGE.md) for more information on how to use these programs.
+
+AnyCollect's documentation is available on [GitHub pages](https://maxime999.github.io/AnyCollect/).
 
 
 ## Readme Contents
