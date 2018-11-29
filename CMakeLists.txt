@@ -27,8 +27,8 @@ option(GPERFTOOLS_CPU_PROFILE "Enable CPU profiling with GPerf Tools" OFF)
 option(GPERFTOOLS_MEM_PROFILE "Enable Memory profiling with GPerf Tools" OFF)
 
 set(VERSION_MAJOR   1   CACHE STRING "Project major version number.")
-set(VERSION_MINOR   0   CACHE STRING "Project minor version number.")
-set(VERSION_PATCH   0   CACHE STRING "Project patch version number.")
+set(VERSION_MINOR   1   CACHE STRING "Project minor version number.")
+set(VERSION_PATCH   2   CACHE STRING "Project patch version number.")
 mark_as_advanced(VERSION_MAJOR VERSION_MINOR VERSION_PATCH)
 
 

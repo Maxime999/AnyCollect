@@ -1,0 +1,5 @@
+<map id="AnyCollect::Metric::Metric" name="AnyCollect::Metric::Metric">
+<area shape="rect" id="node2" href="$classAnyCollect_1_1Metric.html#a2f99eb756f4d801f79220188cc4ba38a" title="Compute the key of potential metric. " alt="" coords="183,39,312,80"/>
+<area shape="rect" id="node3" href="$classAnyCollect_1_1Metric.html#ae3585b71a896dae84ad73a6b6f5fc2bd" title="Returns the name of the metric. " alt="" coords="360,5,489,47"/>
+<area shape="rect" id="node4" href="$classAnyCollect_1_1Metric.html#afa8c6f87e1f88e78ef13f48decf1ee9a" title="Returns the tags of the metric. " alt="" coords="360,71,489,112"/>
+</map>

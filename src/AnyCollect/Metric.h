@@ -58,6 +58,15 @@ namespace AnyCollect {
 			Metric(const std::vector<std::string>& name, const std::map<std::string, std::string>& tags, const std::string& unit = "") noexcept;
 
 			/**
+			 * @brief Construct a new Metric object
+			 *
+			 * @param name name of the metric
+			 * @param tags tags of the metric
+			 * @param unit unit of the metric
+			 */
+			Metric(std::vector<std::string>&& name, std::map<std::string, std::string>&& tags, std::string&& unit = "") noexcept;
+
+			/**
 			 * @brief Copy constructor
 			 *
 			 * @param other metric to copy

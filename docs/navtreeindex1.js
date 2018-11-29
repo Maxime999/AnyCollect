@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"structAnyCollect_1_1Config_1_1expression.html#af7caf4e170c2dd84ac939668d6239c83":[3,0,0,0,1,3],
 "structAnyCollect_1_1Config_1_1expression.html#afa133ada78be3563d103783056841fc8":[3,0,0,0,1,5],
 "structAnyCollect_1_1Config_1_1expression_1_1metric.html":[3,0,0,0,1,0],
 "structAnyCollect_1_1Config_1_1expression_1_1metric.html#a086009e2d6985186ef8c45ff17023c41":[3,0,0,0,1,0,4],

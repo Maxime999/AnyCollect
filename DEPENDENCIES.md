@@ -17,7 +17,7 @@ limitations under the License.
 -->
 
 
-*Instructions for AnyCollect 1.0.0*
+*Instructions for AnyCollect 1.1.2*
 
 ## AnyCollect
 

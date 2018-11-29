@@ -2,6 +2,7 @@ var classAnyCollect_1_1Metric =
 [
     [ "Metric", "classAnyCollect_1_1Metric.html#a0c52beeda564c66359e0e502d2c00c2b", null ],
     [ "Metric", "classAnyCollect_1_1Metric.html#ace645ceb5be3cb02adde0a2150ae52a8", null ],
+    [ "Metric", "classAnyCollect_1_1Metric.html#a34aa926db593c899f80686dde7171020", null ],
     [ "Metric", "classAnyCollect_1_1Metric.html#a01dd6fdf78e2b41ac72874312053df35", null ],
     [ "Metric", "classAnyCollect_1_1Metric.html#a78f7e0efa3cc6fe9b0ee3f4a9f348253", null ],
     [ "generateKey", "classAnyCollect_1_1Metric.html#a2f99eb756f4d801f79220188cc4ba38a", null ],
